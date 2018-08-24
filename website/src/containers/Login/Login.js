@@ -11,11 +11,19 @@ export class Login extends Component {
   }
 
   componentWillMount() {
-
+    this.checkStatus(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
+    this.checkStatus(nextProps)
+  }
 
+  checkStatus(props) {
+    const { isConnected, isLoggedIn, history } = props;
+
+    if (isConnected && isLoggedIn) {
+      history.push('/account')
+    }
   }
 
   render() {
@@ -28,12 +36,15 @@ export class Login extends Component {
 }
 
 Login.propTypes = {
-
+  isConnected: PropTypes.bool,
+  isLoggedIn: PropTypes.bool,
+  history: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-
+    isConnected: state.getIn(['neolink', 'isConnected']),
+    isLoggedIn: state.getIn(['neolink', 'isLoggedIn'])
   };
 };
 

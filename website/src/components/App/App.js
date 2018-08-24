@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
+import AuthRoute from '../../containers/AuthRoute/AuthRoute';
 
 import './App.css';
 
@@ -24,12 +25,12 @@ class App extends Component {
           <Route exact path="/home" component={Home} />
           <Redirect exact from="/" to="/home" />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/account" component={Account} />
-          <Route exact path="/account/new" component={NewPublication} />
+          <AuthRoute exact path="/account" component={Account} />
+          <AuthRoute exact path="/account/new" component={NewPublication} />
           <Route exact path="/publications" component={Publications} />
           <Route exact path="/publications/:address" component={UserPublications} />
           <Route exact path="/publications/:address/:name" component={Auction} />
-          <Route exact path="/publications/:address/:name/:date" component={Bid} />
+          <AuthRoute exact path="/publications/:address/:name/:date" component={Bid} />
         </Switch>
       </div>
     );
