@@ -11,7 +11,7 @@ export function getUserPublications(address) {
     return async dispatch => {
         dispatch(getUserPublicationsRequest())
 
-        testInvokeContract('viewUserPublications', [addressToScriptHash(address)])
+        testInvokeContract('getwUserPublications', [addressToScriptHash(address)])
         .then(res => {
             const result = res.result.stack[0].value
 
