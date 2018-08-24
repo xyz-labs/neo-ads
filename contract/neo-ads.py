@@ -1,7 +1,7 @@
 from boa.interop.Neo.Storage import Get, Put, GetContext
 from boa.interop.Neo.Runtime import GetTrigger,CheckWitness,Log,Notify,Serialize,Deserialize,GetTime
 from boa.interop.Neo.TriggerType import Application,Verification
-from boa.builtins import concat, sha1
+from boa.builtins import concat, sha1, range
 
 OWNER = b'#\xba\'\x03\xc52c\xe8\xd6\xe5"\xdc2 39\xdc\xd8\xee\xe9'
 
@@ -31,6 +31,9 @@ def Main(operation, args):
             return DeletePublication(args)  
         
         elif operation == 'viewUserPublications':
+            if nargs != 1:
+                print('Required arguments: [user]')
+                return [False, '1 arguments required']
 
             return ViewUserPublications(args)
 
@@ -103,7 +106,7 @@ def DeletePublication(args):
 
     if not CheckWitness(sender):
         print('Account owner must be sender')
-        return [False]
+        return [False, 'Account owner must be sender']
 
     context = GetContext()
 
@@ -111,7 +114,7 @@ def DeletePublication(args):
     publication_key = concat(publications_key, sha1(name))
 
     publication = Get(context, publication_key)
-    if len(publication) == 0:
+    if not publication:
         print('Publication does not exist')
         return [False, 'Publication does not exist']
 
@@ -125,13 +128,39 @@ def DeletePublication(args):
     """
 
     publication[4] = False
-    publication = Serialize(publication)
 
-    Put(context, publication_key, publication)
+    Put(context, publication_key, Serialize(publication))
+
     return [True, '']
 
 def ViewUserPublications(args):
-    return [True, '']
+    user = args[0]
+
+    context = GetContext()
+
+    publications_key = concat('publications', user)
+
+    publications = Get(context, publications_key)
+
+    user_publications = []
+
+    if not publications:
+        return [True, user_publications]
+
+    publications = Deserialize(publications) 
+
+    # Go through each user publication and get details
+    for i in range(0, len(publications)):
+        publication_key = concat(publications_key, sha1(publications[i]))
+        
+        publication = Get(context, publication_key)  
+        publication = Deserialize(publication)
+
+        # Append only if publication is active
+        if publication[4]:
+            user_publications.append(publication)
+
+    return [True, user_publications]
 
 def PlaceBid(args):
     return [True, '']
