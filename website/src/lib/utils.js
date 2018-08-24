@@ -1,9 +1,5 @@
-export const getStackValue = (item) => {
-    return item.value
-}
-
-export const getArrayValues = (array) => {
+export const getStackArrayValues = (array) => {
     return array.map((element) => {
-        return getStackValue(element)
+        return element.value
     })
 }

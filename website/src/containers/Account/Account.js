@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { getUserPublications } from '../../reducers/blockchain'
+import { getUserPublications, getUserFunds } from '../../reducers/blockchain'
 
 import './Account.css';
 
@@ -15,6 +15,7 @@ export class Account extends Component {
     const { address } = this.props
 
     this.props.getUserPublications(address)
+    this.props.getUserFunds(address)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,7 +23,7 @@ export class Account extends Component {
   }
 
   render() {
-    const { publications } = this.props
+    const { publications, funds } = this.props
 
     return (
       <div className="Account">
@@ -34,8 +35,10 @@ export class Account extends Component {
 
 Account.propTypes = {
   address: PropTypes.string,
+  funds: PropTypes.number,
   publications: PropTypes.instanceOf(Immutable.List),
-  getUserPublications: PropTypes.func
+  getUserPublications: PropTypes.func,
+  getUserFunds: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -49,6 +52,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUserPublications: (address) => {
       return dispatch(getUserPublications(address))
+    },
+    getUserFunds: (address) => {
+      return dispatch(getUserFunds(address))
     },
   };
 }
