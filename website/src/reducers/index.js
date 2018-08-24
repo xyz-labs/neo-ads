@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux-immutable';
 
-const rootReducer = combineReducers({});
+import neoLinkReducer from './neolink';
+
+const rootReducer = combineReducers({
+    neolink: neoLinkReducer
+});
 
 export default rootReducer

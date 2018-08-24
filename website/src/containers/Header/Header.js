@@ -4,6 +4,7 @@ import Immutable from 'immutable';
 import { connect } from 'react-redux';
 
 import './Header.css';
+import { checkNeoLinkStatus } from '../../reducers/neolink';
 
 export class Header extends Component {
   constructor(props, context) {
@@ -11,7 +12,7 @@ export class Header extends Component {
   }
 
   componentWillMount() {
-
+    this.props.checkNeoLinkStatus()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -19,6 +20,8 @@ export class Header extends Component {
   }
 
   render() {
+    console.log(this.props)
+
     return (
       <div className="Header">
         Header
@@ -28,18 +31,23 @@ export class Header extends Component {
 }
 
 Header.propTypes = {
-
+  isLoggedIn: PropTypes.bool,
+  address: PropTypes.string,
+  checkNeoLinkStatus: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
   return {
-
+    isLoggedIn: state.getIn(['neolink', 'isConnected']),
+    address: state.getIn(['neolink', 'address'])
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
+    checkNeoLinkStatus: () => {
+			return dispatch(checkNeoLinkStatus());
+		},
   };
 }
 
