@@ -30,23 +30,35 @@ def Main(operation, args):
 
             return DeletePublication(args)  
         
-        elif operation == 'viewUserPublications':
+        elif operation == 'getUserPublications':
             if nargs != 1:
                 print('Required arguments: [user]')
                 return [False, '1 arguments required']
 
-            return ViewUserPublications(args)
+            return GetUserPublications(args)
+
+        elif operation == 'getAuctionByMonth':
+
+            return GetAuctionByMonth(args)
+
+        elif operation == 'getAuctionByDay':
+
+            return GetAuctionByDay(args)
 
         elif operation == 'placeBid':
 
             return PlaceBid(args)
 
-        elif operation == 'viewWinningBid':
+        elif operation == 'getWinningBid':
 
-            return ViewWinningBid(args)
+            return GetWinningBid(args)
 
-        elif operation == 'viewFunds':
-            return ViewFunds(args)
+        elif operation == 'getUserFunds':
+            if nargs != 1:
+                print('Required arguments: [user]')
+                return [False, '1 arguments required']
+
+            return GetUserFunds(args)
 
         elif operation == 'withdraw':
             return Withdraw(args)
@@ -133,7 +145,7 @@ def DeletePublication(args):
 
     return [True, '']
 
-def ViewUserPublications(args):
+def GetUserPublications(args):
     user = args[0]
 
     context = GetContext()
@@ -162,14 +174,29 @@ def ViewUserPublications(args):
 
     return [True, user_publications]
 
+def GetAuctionByMonth(args):
+
+    return [True, '']
+
+def GetAuctionByDay(args):
+
+    return [True, '']
+
 def PlaceBid(args):
     return [True, '']
 
-def ViewWinningBid(args):
+def GetWinningBid(args):
     return [True, '']
 
-def ViewFunds(args):
-    return [True, '']
+def GetUserFunds(args):
+    user = args[0]
+
+    context = GetContext()
+
+    funds_key = concat('funds', user)
+    funds = Get(context, funds_key)
+
+    return [True, funds]
 
 def Withdraw(args):
     return [True, '']
