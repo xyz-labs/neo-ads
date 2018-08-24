@@ -36,7 +36,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.getIn(['neolink', 'isConnected']),
+    isLoggedIn: state.getIn(['neolink', 'isLoggedIn']),
     address: state.getIn(['neolink', 'address'])
   };
 };

@@ -1,6 +1,6 @@
 {
   "name": "neo-ads",
-  "homepage": "https://xyz-labs.github.com/neo-ads",
+  "homepage": "https://xyz-labs.github.com/neo-ads/",
   "version": "0.1.0",
   "private": true,
   "authors": [
@@ -8,6 +8,8 @@
     "Tsering Redmond <tsering@blocksports.com> (https://github.com/TseringR)"
   ],
   "dependencies": {
+    "@cityofzion/neon-js": "^3.10.1",
+    "bs58": "^4.0.1",
     "connected-react-router": "^4.4.1",
     "history": "^4.7.2",
     "immutable": "^3.8.2",

@@ -18,7 +18,7 @@ class AuthRoute extends Route {
 
 AuthRoute.propTypes = {
   isLoggedIn: PropTypes.bool,
-  component: PropTypes.component
+  component: PropTypes.func
 };
 
 const mapStateToProps = state => {
