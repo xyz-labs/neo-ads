@@ -15,13 +15,13 @@ module.exports = {
 
     const actions = [{
       type: 'add',
-      path: '../src/containers/{{properCase name}}/index.js',
+      path: '../src/containers/{{properCase name}}/{{properCase name}}.js',
       templateFile: './container/index.js.hbs',
       abortOnFail: true,
     },
     {
       type: 'add',
-      path: '../src/containers/{{properCase name}}/style.css',
+      path: '../src/containers/{{properCase name}}/{{properCase name}}.css',
       templateFile: './container/style.css.hbs',
       abortOnFail: true,
     }];

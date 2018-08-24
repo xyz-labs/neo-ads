@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import thunk from 'redux-thunk';
 import { applyMiddleware, compose, createStore } from 'redux'
 import { createBrowserHistory } from 'history'
-import { routerMiddleware, connectRouter } from 'connected-react-router/immutable'
+import { routerMiddleware, connectRouter, ConnectedRouter } from 'connected-react-router/immutable'
 import { Provider } from 'react-redux'
 import registerServiceWorker from './registerServiceWorker';
 import rootReducer from './reducers';
@@ -31,7 +31,9 @@ const store = createStore(
 ReactDOM.render(
     (
     <Provider store={store}>
-        <App history={history} />
+      <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
     </Provider>
     ), 
     document.getElementById('root')
