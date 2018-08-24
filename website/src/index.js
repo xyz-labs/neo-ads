@@ -7,6 +7,7 @@ import { createBrowserHistory } from 'history'
 import { routerMiddleware, connectRouter } from 'connected-react-router/immutable'
 import { Provider } from 'react-redux'
 import registerServiceWorker from './registerServiceWorker';
+import rootReducer from './reducers';
 
 import App from './components/App/App';
 import './index.css';
