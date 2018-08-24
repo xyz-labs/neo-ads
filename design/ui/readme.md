@@ -62,7 +62,7 @@ UI Design (without flow)
 
 <p align="center">
     <img
-      src="/design/ui/success-publication.png"
+      src="/design/ui/success-bid.png"
       width="800px;">
 </p>
 
