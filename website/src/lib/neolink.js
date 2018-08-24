@@ -1,10 +1,12 @@
 // Not the nicest way to do this but !time!
-export const listenToEvent = (event_type, data={}) => {
+export const listenToEvent = (event_type, wait=true, data={}) => {
 
     window.postMessage({ type: event_type, text: data }, "*");
 
     return new Promise((resolve, reject) => {
-        setTimeout(reject, 10000);
+        
+        if (wait) setTimeout(reject, 10000);
+        
         window.addEventListener('message', (event) => {
             const { source, data } = event
     

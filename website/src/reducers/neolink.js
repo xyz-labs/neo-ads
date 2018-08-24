@@ -2,16 +2,29 @@ import Immutable from 'immutable';
 import { createAction, createReducer } from 'redux-act';
 import { listenToEvent } from '../lib/neolink';
 
-const updateNeoLinkStatus = createAction('UPDATE_NEOLINK_STATUS');
+const neoLinkRequest = createAction('NEOLINK_REQUEST');
+const updateNeoLinkStatus = createAction('UPDATE_NEOLINK_STATUS')
+const transactionSubmitted = createAction('TRANSACTION_SUBMITTED')
 
 export function checkNeoLinkStatus() {
     return async dispatch => {
+        dispatch(neoLinkRequest())
         listenToEvent('NEOLINK_GET_EXTENSION_STATUS')
         .then(resp => {
             dispatch(updateNeoLinkStatus(resp))
         })
         .catch(() => {
-            console.log("NeoLink is not connected")
+            dispatch(transactionSubmitted())
+        })
+    }
+}
+
+export function sendInvoke(data) {
+    return async dispatch => {
+        dispatch(neoLinkRequest())
+        listenToEvent('NEOLINK_SEND_INVOKE', false, data)
+        .then(resp => {
+            dispatch(transactionSubmitted())
         })
     }
 }
@@ -24,13 +37,24 @@ const initialState = Immutable.Map({
 })
 
 const neoLinkReducer = createReducer({
+    [neoLinkRequest]: (state) => {
+        return state.merge({
+            isLoading: true
+        })
+    },
     [updateNeoLinkStatus]: (state, resp) => {
         return state.merge({
+            isLoading: false,
             isConnected: true,
             isLoggedIn: resp.isLoggedIn,
             address: resp.address,
         });
     },
+    [transactionSubmitted]: (state, resp) => {
+        return state.merge({
+            isLoading: false,
+        })
+    }
 }, initialState);
 
 export default neoLinkReducer;

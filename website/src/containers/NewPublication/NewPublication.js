@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-
+import { sendInvoke } from '../../reducers/neolink';
 import './NewPublication.css';
 
 export class NewPublication extends Component {
@@ -11,7 +11,16 @@ export class NewPublication extends Component {
   }
 
   componentWillMount() {
+    const scriptHash = process.env.REACT_APP_SCRIPT_HASH;
+    const invocationObject = {
+      scriptHash,
+      operation: 'create',
+      args: ['test.com'],
+      assetType: 'GAS',
+      assetAmount: 0.00000001,
+    };
 
+    this.props.sendInvoke(invocationObject)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,14 +30,14 @@ export class NewPublication extends Component {
   render() {
     return (
       <div className="NewPublication">
-        NewP
+        NewPublication
       </div>
     );
   }
 }
 
 NewPublication.propTypes = {
-
+  sendInvoke: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -39,7 +48,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
+    sendInvoke: (data) => {
+      return dispatch(sendInvoke(data))
+    }
   };
 }
 

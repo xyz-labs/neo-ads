@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getUserPublications, getUserFunds } from '../../reducers/blockchain'
 
 import './Account.css';
@@ -27,7 +28,7 @@ export class Account extends Component {
 
     return (
       <div className="Account">
-        Account
+        <Link to="/account/new">Account</Link>
       </div>
     );
   }
