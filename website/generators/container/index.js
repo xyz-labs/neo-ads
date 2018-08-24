@@ -11,7 +11,7 @@ module.exports = {
     default: 'Form',
   }],
   actions: (data) => {
-    // Generate index.js, index.test.js and style.less
+    // Generate index.js, style.css
 
     const actions = [{
       type: 'add',
