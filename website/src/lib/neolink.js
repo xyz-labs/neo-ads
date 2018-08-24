@@ -1,4 +1,4 @@
-// Not the nicest way to do this but !time!
+// Not the nicest way to do this but no !time!
 export const listenToEvent = (event_type, wait=true, data={}) => {
 
     window.postMessage({ type: event_type, text: data }, "*");
