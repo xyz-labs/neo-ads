@@ -11,16 +11,16 @@ export class NewPublication extends Component {
   }
 
   componentWillMount() {
-    const scriptHash = process.env.REACT_APP_SCRIPT_HASH;
-    const invocationObject = {
-      scriptHash,
-      operation: 'create',
-      args: ['test.com'],
-      assetType: 'GAS',
-      assetAmount: 0.00000001,
-    };
+    // const scriptHash = process.env.REACT_APP_SCRIPT_HASH;
+    // const invocationObject = {
+    //   scriptHash,
+    //   operation: 'create',
+    //   args: ['test.com'],
+    //   assetType: 'GAS',
+    //   assetAmount: 0.00000001,
+    // };
 
-    this.props.sendInvoke(invocationObject)
+    // this.props.sendInvoke(invocationObject)
   }
 
   componentWillReceiveProps(nextProps) {

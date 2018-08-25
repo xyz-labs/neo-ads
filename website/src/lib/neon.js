@@ -31,10 +31,10 @@ export const addressToScriptHash = (address) => {
     const bytes = bs58.decode(address)
 
     if (bytes.length != 25) {
-        throw new Error('Invalid address length')
+        return ''
     };
     if (bytes[0] != 23) {
-        throw new Error('Incorrect address version')
+        return ''
     };
 
      // Verify checksum here
@@ -42,6 +42,18 @@ export const addressToScriptHash = (address) => {
     const substr = bytes.slice(1,21)
 
     return u.ab2hexstring(substr)
+}
+
+export const createInvokeObject = (operation, args, assetAmount=0.00000001) => {
+    const scriptHash = process.env.REACT_APP_SCRIPT_HASH
+    
+    return invocationObject = {
+          scriptHash,
+          operation,
+          args,
+          assetAmount,
+          assetType: 'GAS',
+        };
 }
 
 const createScript = (operation, args) => {

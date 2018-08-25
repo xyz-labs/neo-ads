@@ -10,8 +10,6 @@ class AuthRoute extends Route {
   render() {
     const { isLoggedIn, computedMatch } = this.props;
 
-    console.log(this.props)
-
     return isLoggedIn ? 
       <this.props.component match={computedMatch} /> :
       <Redirect to="/login"/>
@@ -20,7 +18,8 @@ class AuthRoute extends Route {
 
 AuthRoute.propTypes = {
   isLoggedIn: PropTypes.bool,
-  component: PropTypes.func
+  component: PropTypes.func,
+  computedMatch: PropTypes.object
 };
 
 const mapStateToProps = state => {

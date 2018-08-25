@@ -28,7 +28,7 @@ export class Account extends Component {
 
     return (
       <div className="Account">
-        <Link to="/account/tags/test">Account</Link>
+        <Link to="/publications/a/b/3">Account</Link>
       </div>
     );
   }
