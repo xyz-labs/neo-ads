@@ -4,6 +4,7 @@ import Immutable from 'immutable';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import dateformat from 'dateformat';
+import { u, wallet } from '@cityofzion/neon-js'
 import { getAuctionDetail } from '../../reducers/blockchain';
 import CookieTrail from '../../components/CookieTrail/CookieTrail';
 import './AuctionDetail.css';
@@ -57,7 +58,7 @@ export class AuctionDetail extends Component {
           <p className="t3 heading">Bid</p>
         </div>
         <div className="w-col w-col-2">
-          <p className="t3 heading">Address Hash</p>
+          <p className="t3 heading">Address</p>
         </div>
         <div className="w-col w-col-5"></div>
         <div className="w-col w-col-1"></div>
@@ -67,8 +68,8 @@ export class AuctionDetail extends Component {
 
     auctionDetail.forEach((bid, idx) => {
       const gasAmount = bid.value[1].value / 100000000
-      const addressHash = bid.value[0].value
-      const subHash = addressHash.substr(0,4) + '....' + addressHash.substr(36,4)
+      const address = wallet.getAddressFromScriptHash(u.reverseHex(bid.value[0].value))
+      const subHash = address.substr(0,4) + '....' + address.substr(29,4)
 
       array.push(
         <div className="table-body w-row" key={idx}>

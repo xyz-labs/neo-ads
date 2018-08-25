@@ -5,3 +5,8 @@
 .cookie-trail-item {
     margin-right: 10px;
 }
+
+.cookie-trail-caret {
+    position: relative;
+    top: -1px;
+}

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getWinningBid } from '../../reducers/blockchain';
 import { sendInvoke } from '../../reducers/neolink';
 import { createInvokeObject } from '../../lib/neon';
+import { u, wallet } from '@cityofzion/neon-js'
 import dateformat from 'dateformat';
 import './Bid.css';
 import CookieTrail from '../../components/CookieTrail/CookieTrail';
@@ -65,9 +66,10 @@ export class Bid extends Component {
     const { address, name, date } = this.props.match.params
 
     // not the nicest way to go about this
-    const imageUrlArray = [this.state.imageURL_0, this.state.imageURL_1, this.state.imageURL_2]
+    const imageUrlArray = [this.state.imageURL_0, this.state.imageURL_1]
 
-    const args = [address, name, date, this.state.adURL, imageUrlArray.join()]
+    const args = [wallet.getAddressFromScriptHash(u.reverseHex(address)), name, parseInt(date), this.state.adURL, imageUrlArray]
+    console.log(args)
     const invocationObject = createInvokeObject('placeBid', args, this.state.bid)
 
     this.props.sendInvoke(invocationObject)
@@ -101,7 +103,18 @@ export class Bid extends Component {
           <div className="w-form">
             <form id="email-form" name="email-form" data-name="Email Form" onSubmit={this.handleSubmit}>
               <div className="div-block-4 gas"><label for="name" className="t1">Bid</label>
-                <div className="div-block-2"><input type="text" className="t4 field w-input" maxlength="256" name="bid" data-name="Bid" placeholder="0.00" id="bid" required=""/>
+                <div className="div-block-2">
+                  <input 
+                    type="test" 
+                    className="t4 field w-input" 
+                    maxlength="256" 
+                    name="bid" 
+                    data-name="Bid" 
+                    placeholder="0.00" 
+                    id="bid" 
+                    required=""
+                    onChange={this.handleChange('bid')}
+                    />
                   <div className="div-block-3">
                     <p className="t4 mark">GAS</p>
                   </div>

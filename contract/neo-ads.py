@@ -79,9 +79,12 @@ def Main(operation, args):
 
             return PlaceBid(args)
 
-        elif operation == 'getWinningBid':
+        elif operation == 'getAuctionWinner':
+            if nargs != 3:
+                print('Required arguments: [user] [name] [date]')
+                return [False, '3 arguments required']
 
-            return GetWinningBid(args)
+            return GetAuctionWinner(args)
 
         elif operation == 'getUserFunds':
             if nargs != 1:
@@ -368,8 +371,32 @@ def GetAuctionByDate(args):
 
     return [True, bids]
 
-def GetWinningBid(args):
-    return [True, '']
+def GetAuctionWinner(args):
+    owner = args[0]
+    name = args[1]
+    date = args[2]
+
+    context = GetContext()
+
+    publication_key = validatePublicationAuction(context, args)
+    if not publication_key:
+        return [False, 'Invalid auction params'] 
+
+    date = date + 0
+
+    auction_key = concat(publication_key, sha1(date))
+    bids_key = concat(auction_key, 'bids')
+    bids = Get(context, bids_key)
+
+    if not bids:
+        print('No bids')
+        return [False, 'No bids']
+
+    bids = Deserialize(bids)
+
+    best_bid = bids[len(bids) - 1]
+
+    return [True, best_bid]
 
 def GetUserFunds(args):
     user = args[0]
