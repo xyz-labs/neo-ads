@@ -1048,6 +1048,11 @@
   background-color: #f2f3f7;
 }
 
+.no-pubs{
+  padding-top: 70px;
+  text-align: center;
+  color: #21216840;
+}
 
 /* React Calendar */
 .react-calendar{

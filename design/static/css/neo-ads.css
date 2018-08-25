@@ -1048,6 +1048,12 @@
   background-color: #f2f3f7;
 }
 
+.no-pubs{
+  padding-top: 70px;
+  text-align: center;
+  color: #21216840;
+}
+
 html.w-mod-js *[data-ix="new-interaction"] {
   opacity: 0.5;
 }
