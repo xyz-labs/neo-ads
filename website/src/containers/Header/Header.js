@@ -20,10 +20,10 @@ export class Header extends Component {
     const { isLoggedIn } = this.props
 
     return isLoggedIn ? 
-      (<Link to={'/account'} class="button-secondary w-button">
+      (<Link to={'/account'} className="button-secondary w-button">
         Account
       </Link>) :
-      (<Link to={'/login'} class="button-secondary w-button">
+      (<Link to={'/login'} className="button-secondary w-button">
         Login
       </Link>)
   }
@@ -36,7 +36,6 @@ export class Header extends Component {
       '';
   }
  
-
   render() {
     return (
       <div className="header">
@@ -49,8 +48,8 @@ export class Header extends Component {
             </div>
             <div className="column-2 w-col w-col-6">
               <div className="text-block">{this.Address}</div>
-                {this.AccountButton}
-              </div>
+              {this.AccountButton}
+            </div>
           </div>
         </div>
       </div>

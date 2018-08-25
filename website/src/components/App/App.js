@@ -17,6 +17,14 @@ import AuctionDetail from '../../containers/AuctionDetail/AuctionDetail';
 import Bid from '../../containers/Bid/Bid';
 import Tags from '../../containers/Tags/Tags';
 
+import HeroImage from '../../images/ad-tiles.svg'
+
+const Background = '~assets/ad-tiles.svg'
+
+var heroStyle = {
+  backgroundImage: `url(${Background})`
+}
+
 class App extends Component {
   render() {
     return (
@@ -37,6 +45,7 @@ class App extends Component {
           <Route exact path="/publications/:address/:name/:date" component={AuctionDetail} />
           <AuthRoute exact path="/publications/:address/:name/:date/bid" component={Bid} />
         </Switch>
+        <div class="hero-img" style={heroStyle}></div>
       </div>
     );
   }
