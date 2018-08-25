@@ -19,6 +19,7 @@ export const listenToEvent = (event_type, wait=true, data={}) => {
             const type_response = event_type + '_RESPONSE';
 
             if (type == type_response) {
+                console.log(data)
                 resolve(data.result);
             }
         });

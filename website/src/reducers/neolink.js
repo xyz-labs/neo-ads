@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import { createAction, createReducer } from 'redux-act';
 import { listenToEvent } from '../lib/neolink';
+import { addressToScriptHash } from '../lib/neon';
 
 const neoLinkRequest = createAction('NEOLINK_REQUEST');
 const updateNeoLinkStatus = createAction('UPDATE_NEOLINK_STATUS')
@@ -29,6 +30,7 @@ export function sendInvoke(data) {
 
         listenToEvent('NEOLINK_SEND_INVOKE', false, data)
         .then(resp => {
+            console.log(resp)
             dispatch(transactionSubmitted())
         })
     }
@@ -48,11 +50,13 @@ const neoLinkReducer = createReducer({
         })
     },
     [updateNeoLinkStatus]: (state, resp) => {
+        const { isLoggedIn, address } = resp
+
         return state.merge({
             isLoading: false,
             isConnected: true,
-            isLoggedIn: resp.isLoggedIn,
-            address: resp.address,
+            isLoggedIn: isLoggedIn,
+            address: address ? addressToScriptHash(address) : '',
         });
     },
     [transactionSubmitted]: (state, resp) => {

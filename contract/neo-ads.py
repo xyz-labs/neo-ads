@@ -102,6 +102,7 @@ def CreatePublication(args):
     name = args[1]
     url = args[2]
     category = args[3]
+    sender_addr = get_sender_address()
 
     if not CheckWitness(sender):
         print('Account owner must be sender')
@@ -125,7 +126,7 @@ def CreatePublication(args):
     # If publication already exists check if it is active/deleted
     if publication:
         publication = Deserialize(publication)
-        if publication[4]:
+        if publication[5]:
             print('Publication name currently active')
             return [False, 'Active publication name']
     
@@ -144,9 +145,9 @@ def CreatePublication(args):
     first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY)
     is_active = True
 
-    new_publication = [name, url, category, first_date, is_active]
+    new_publication = [sender_addr, name, url, category, first_date, is_active]
     publications.append(name)
-    new_publications.append([sender, name])
+    new_publications.append([sender_addr, name])
 
     # Shift new publication list to the left
     if len(new_publications) > 5:
@@ -177,7 +178,7 @@ def DeletePublication(args):
         return [False, 'Publication does not exist']
 
     publication = Deserialize(publication)
-    if not publication[4]:
+    if not publication[5]:
         print('Publication has already been deleted')
         return [False, 'Publication has already been deleted']
 
@@ -185,7 +186,7 @@ def DeletePublication(args):
     Check for active bids etc here - revisit if time (OOS)
     """
 
-    publication[4] = False
+    publication[5] = False
 
     Put(context, publication_key, Serialize(publication))
 
@@ -215,7 +216,7 @@ def GetUserPublications(args):
         publication = Deserialize(publication)
 
         # Append only if publication is active
-        if publication[4]:
+        if publication[5]:
             user_publications.append(publication)
 
     return [True, user_publications]
@@ -244,7 +245,7 @@ def GetNewPublications():
         publication = Deserialize(publication)
 
         # Append only if publication is active
-        if publication[4]:
+        if publication[5]:
             new_publications.append(publication)    
 
     return [True, new_publications]
@@ -437,11 +438,20 @@ def validatePublicationAuction(context, args):
     else:
         publication = Deserialize(publication)
 
-        if not publication[4]: 
+        if not publication[5]: 
             print('Publication is not currently active')
             return False
     
     return publication_key
+
+# Assumes tx sent with GAS
+def get_sender_address():
+    tx = GetScriptContainer()
+    references = tx.References
+    reference = references[0]
+    sender_addr = reference.ScriptHash
+
+    return sender_addr
 
 # Retrieved from https://github.com/neonexchange/neo-ico-template/blob/master/nex/txio.py
 def get_asset_attachments():

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { getNewPublications, getUserPublications } from '../../reducers/blockchain'
 import './Publications.css';
+
+import SearchImage from '../../images/search.svg'
 
 export class Publications extends Component {
   constructor(props, context) {
@@ -18,10 +21,83 @@ export class Publications extends Component {
 
   }
 
+  publicationTable(publications) {
+    const array = []
+
+    array.push(
+      <div className="table-head w-row" id="header">
+        <div className="w-col w-col-2">
+          <p className="t3"> </p>
+        </div>
+        <div className="w-col w-col-3">
+          <p className="t3 heading">Website</p>
+        </div>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Category</p>
+        </div>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Auction</p>
+        </div>
+        <div className="w-col w-col-2"></div>
+        <div className="w-col w-col-1"></div>
+      </div>
+    )
+
+    publications.forEach((publication, idx) => {
+      array.push(
+        <div className="table-body w-row" id={idx}>
+          <div className="w-col w-col-2">
+            <p className="t3">{publication.get(1)}</p>
+          </div>
+          <div className="w-col w-col-3">
+            <p className="t7">{publication.get(2)}</p>
+          </div>
+          <div className="w-col w-col-2">
+            <p className="t7">{publication.get(3)}</p>
+          </div>
+          <div className="w-col w-col-2">
+            <Link to={`/publications/${publication.get(0)}/${publication.get(1)}`} className="button-secondary w-button">View</Link>
+          </div>
+          <div className="w-col w-col-2"></div>
+          <div className="w-col w-col-1"></div>
+        </div>
+      )
+    })
+  }
+
   render() {
+    const { publications } = this.props
+
     return (
-      <div className="Publications">
-        Pub
+    <div className="content">
+        <div className="content-body">
+          <div className="general-header">
+            <div>
+              <h2 className="h2">Publisher Network</h2>
+            </div>
+            <div className="search-form w-form">
+              <form id="email-form" name="email-form" data-name="Email Form" className="search-form">
+                <div className="div-block-4">
+                  <div className="div-block-2">
+                    <img src={SearchImage} className="image-5"/>
+                    <input 
+                      type="text" 
+                      className="t4 field search w-input" 
+                      maxlength="256" name="search" 
+                      data-name="search" 
+                      placeholder="Search..." 
+                      id="search" 
+                      required=""
+                      />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="table">
+            {this.publicationTable(publications)}
+          </div>
+        </div>
       </div>
     );
   }

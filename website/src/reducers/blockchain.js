@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 import { createAction, createReducer } from 'redux-act';
 import { u } from '@cityofzion/neon-js';
-import { testInvokeContract, addressToScriptHash } from '../lib/neon';
+import { testInvokeContract } from '../lib/neon';
 import { getStackArrayValues } from '../lib/utils';
 
 const getItemRequest = createAction('GET_ITEM_REQUEST')
@@ -21,7 +21,7 @@ export function getUserPublications(address) {
     return async dispatch => {
         dispatch(getItemRequest())
 
-        testInvokeContract('getUserPublications', [addressToScriptHash(address)])
+        testInvokeContract('getUserPublications', [address])
         .then(res => {
             const result = res.result.stack[0].value
 
@@ -61,7 +61,7 @@ export function getUserFunds(address) {
     return async dispatch => {
         dispatch(getItemRequest())
 
-        testInvokeContract('getUserFunds', [addressToScriptHash(address)])
+        testInvokeContract('getUserFunds', [address])
         .then(res => {
             const result = res.result.stack[0].value
 
@@ -83,7 +83,7 @@ export function getWinningBid(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getWinningBid', [addressToScriptHash(address), u.str2hexstring(name), parseInt(date)])
+        testInvokeContract('getWinningBid', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
 
@@ -105,7 +105,7 @@ export function getAuction(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getAuctionByMonth', [addressToScriptHash(address), u.str2hexstring(name), parseInt(date)])
+        testInvokeContract('getAuctionByMonth', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
 
@@ -127,7 +127,7 @@ export function getAuctionDetail(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getAuctionByDay', [addressToScriptHash(address), u.str2hexstring(name), parseInt(date)])
+        testInvokeContract('getAuctionByDay', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
 
@@ -165,6 +165,13 @@ const blockchainReducer = createReducer({
     [getPublicationsSuccess]: (state, resp) => {
         const responseArray = getStackArrayValues(resp)
 
+        const publications = responseArray.map((element) => {
+            const values = getStackArrayValues(element);
+            console.log(values[0])
+            return [u.hexstring2ab(values[0]), u.hexstring2str(values[1]),u.hexstring2str(values[2]), values[3], values[4]]
+        })
+
+        console.log(publications)
         return state.merge({
             isLoading: false,
             activePublicationList: Immutable.List(responseArray)

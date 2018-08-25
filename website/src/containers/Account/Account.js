@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserPublications, getUserFunds } from '../../reducers/blockchain'
 import { sendInvoke } from '../../reducers/neolink'
-import { addressToScriptHash, createInvokeObject } from '../../lib/neon'
+import { createInvokeObject } from '../../lib/neon'
 import './Account.css';
 
 import CrossImage from '../../images/cross.svg'
@@ -30,10 +30,10 @@ export class Account extends Component {
   }
 
   get noPublicationsMessage() {
-    return <div>No Publications</div>
+    return <div class="no-pubs">You haven't created any publications. Click the button above to get started!</div>
   }
 
-  publicationTable(address, publications) {
+  publicationTable(publications) {
     const array = []
 
     array.push(
@@ -60,22 +60,23 @@ export class Account extends Component {
     )
 
     publications.forEach((publication, idx) => {
+      console.log(publication)
       array.push(
         <div class="table-body w-row" id={idx}>
           <div class="w-col w-col-2">
-            <p class="t3">{publication.get(0)}</p>
+            <p class="t3">{publication.get(1)}</p>
           </div>
           <div class="w-col w-col-3">
-            <p class="t7">{publication.get(1)}</p>
-          </div>
-          <div class="w-col w-col-2">
             <p class="t7">{publication.get(2)}</p>
           </div>
           <div class="w-col w-col-2">
-            <Link to={`/publications/${address}/${publication.get(0)}`} class="button-secondary w-button">View</Link>
+            <p class="t7">{publication.get(3)}</p>
           </div>
           <div class="w-col w-col-2">
-            <Link to={`/account/tags/${publication.get(0)}`} class="button-secondary w-button">View</Link>
+            <Link to={`/publications/${publication.get(0)}/${publication.get(1)}`} class="button-secondary w-button">View</Link>
+          </div>
+          <div class="w-col w-col-2">
+            <Link to={`/account/tags/${publication.get(1)}`} class="button-secondary w-button">View</Link>
           </div>
           <div class="w-col w-col-1">
             <div onClick={this.handleDeleteClick(publication)} class="button-secondary _1x1"><img src={CrossImage} class="cross"/></div>
@@ -95,7 +96,7 @@ export class Account extends Component {
   handleWithdrawClick() {
     const { address, funds } = this.props
 
-    const args = [addressToScriptHash(address), funds]
+    const args = [address, funds]
     const invocationObject = createInvokeObject('withdrawFunds', args)
 
     this.props.sendInvoke(invocationObject)
@@ -112,11 +113,11 @@ export class Account extends Component {
               <div>
                 <h2 class="h2">My Publications</h2>
               </div>
-              <a href="#" class="button-primary header-btn w-button">Create New Publication</a>
+              <Link to="/account/new" class="button-primary header-btn w-button">Create New Publication</Link>
             </div>
             <div class="div-block">
               {publications.size > 0 ?
-                this.publicationTable(address, publications) :
+                this.publicationTable(publications) :
                 this.noPublicationsMessage
                 }
             </div>
