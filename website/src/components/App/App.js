@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import AuthRoute from '../../containers/AuthRoute/AuthRoute';
 
 import './App.css';
@@ -17,16 +17,10 @@ import AuctionDetail from '../../containers/AuctionDetail/AuctionDetail';
 import Bid from '../../containers/Bid/Bid';
 import Tags from '../../containers/Tags/Tags';
 
-import HeroImage from '../../images/ad-tiles.svg'
-
-const Background = '~assets/ad-tiles.svg'
-
-var heroStyle = {
-  backgroundImage: `url(${Background})`
-}
-
 class App extends Component {
   render() {
+    const pathname = this.props.location.pathname
+
     return (
       <div className="body">
         <header>
@@ -45,14 +39,18 @@ class App extends Component {
           <Route exact path="/publications/:address/:name/:date" component={AuctionDetail} />
           <AuthRoute exact path="/publications/:address/:name/:date/bid" component={Bid} />
         </Switch>
-        <div class="hero-img" style={heroStyle}></div>
+          {
+            pathname == '/home' ?
+            <div className="hero-img"></div> :
+            null
+          }
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return 
+App.propTypes = {
+  location: PropTypes.object
 }
 
-export default App;
+export default withRouter(App);

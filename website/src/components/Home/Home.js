@@ -17,14 +17,6 @@ class Home extends Component {
     this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
-  componentWillMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-
-  }
-
   get homeOne() {
     return (
       <div className="div-block-10">
