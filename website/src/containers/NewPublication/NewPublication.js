@@ -51,10 +51,10 @@ export class NewPublication extends Component {
     const args = [address, name, url, category]
     const invocationObject = createInvokeObject('createPublication', args)
 
-    const test = testInvokeContract('createPublication',[address, u.str2hexstring(name), u.str2hexstring(url), u.str2hexstring(category)])
-    test.then((res) => {
-      console.log(res)
-    })
+    // const test = testInvokeContract('createPublication',["AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y", u.str2hexstring(name), u.str2hexstring(url), u.str2hexstring(category)])
+    // test.then((res) => {
+    //   console.log(res)
+    // })
 
     this.props.sendInvoke(invocationObject)
   }

@@ -47,22 +47,24 @@ export class Publications extends Component {
       array.push(
         <div className="table-body w-row" id={idx}>
           <div className="w-col w-col-2">
-            <p className="t3">{publication.get(1)}</p>
+            <p className="t3">{publication[1]}</p>
           </div>
           <div className="w-col w-col-3">
-            <p className="t7">{publication.get(2)}</p>
+            <p className="t7">{publication[2]}</p>
           </div>
           <div className="w-col w-col-2">
-            <p className="t7">{publication.get(3)}</p>
+            <p className="t7">{publication[3]}</p>
           </div>
           <div className="w-col w-col-2">
-            <Link to={`/publications/${publication.get(0)}/${publication.get(1)}`} className="button-secondary w-button">View</Link>
+            <Link to={`/publications/${publication[0]}/${publication[1]}`} className="button-secondary w-button">View</Link>
           </div>
           <div className="w-col w-col-2"></div>
           <div className="w-col w-col-1"></div>
         </div>
       )
     })
+
+    return array
   }
 
   render() {

@@ -34,7 +34,6 @@ class App extends Component {
           <AuthRoute exact path="/account/new" component={NewPublication} />
           <AuthRoute exact path="/account/tags/:name" component={Tags}/>
           <Route exact path="/publications" component={Publications} />
-          <Route exact path="/publications/:address" component={UserPublications} />
           <Route exact path="/publications/:address/:name" component={Auction} />
           <Route exact path="/publications/:address/:name/:date" component={AuctionDetail} />
           <AuthRoute exact path="/publications/:address/:name/:date/bid" component={Bid} />

@@ -44,7 +44,7 @@ export class Bid extends Component {
     // not the nicest way to go about this
     const imageUrlArray = [this.state.imageURL_0, this.state.imageURL_1, this.state.imageURL_2]
 
-    const args = [address, name, date, this.state.adURL, imageUrlArray.join()]
+    const args = ["AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y", name, date, this.state.adURL, imageUrlArray.join()]
     const invocationObject = createInvokeObject('placeBid', args, this.state.bid)
 
     this.props.sendInvoke(invocationObject)

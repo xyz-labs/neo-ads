@@ -40,7 +40,8 @@ const initialState = Immutable.Map({
     isLoading: false,
     isConnected: false,
     isLoggedIn: false,
-    address: ''
+    address: '',
+    addressHash: ''
 })
 
 const neoLinkReducer = createReducer({
@@ -56,7 +57,8 @@ const neoLinkReducer = createReducer({
             isLoading: false,
             isConnected: true,
             isLoggedIn: isLoggedIn,
-            address: address ? addressToScriptHash(address) : '',
+            address: address,
+            addressHash: address ? addressToScriptHash(address) : '',
         });
     },
     [transactionSubmitted]: (state, resp) => {

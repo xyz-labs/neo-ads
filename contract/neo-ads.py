@@ -102,7 +102,6 @@ def CreatePublication(args):
     name = args[1]
     url = args[2]
     category = args[3]
-    sender_addr = get_sender_address()
 
     if not CheckWitness(sender):
         print('Account owner must be sender')
@@ -145,9 +144,9 @@ def CreatePublication(args):
     first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY)
     is_active = True
 
-    new_publication = [sender_addr, name, url, category, first_date, is_active]
+    new_publication = [sender, name, url, category, first_date, is_active]
     publications.append(name)
-    new_publications.append([sender_addr, name])
+    new_publications.append([sender, name])
 
     # Shift new publication list to the left
     if len(new_publications) > 5:

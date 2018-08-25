@@ -19,10 +19,10 @@ export class Account extends Component {
   }
 
   componentWillMount() {
-    const { address } = this.props
+    const { addressHash } = this.props
 
-    this.props.getUserPublications(address)
-    this.props.getUserFunds(address)
+    this.props.getUserPublications(addressHash)
+    this.props.getUserFunds(addressHash)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,23 +60,22 @@ export class Account extends Component {
     )
 
     publications.forEach((publication, idx) => {
-      console.log(publication)
       array.push(
         <div class="table-body w-row" id={idx}>
           <div class="w-col w-col-2">
-            <p class="t3">{publication.get(1)}</p>
+            <p class="t3">{publication[1]}</p>
           </div>
           <div class="w-col w-col-3">
-            <p class="t7">{publication.get(2)}</p>
+            <p class="t7">{publication[2]}</p>
           </div>
           <div class="w-col w-col-2">
-            <p class="t7">{publication.get(3)}</p>
+            <p class="t7">{publication[3]}</p>
           </div>
           <div class="w-col w-col-2">
-            <Link to={`/publications/${publication.get(0)}/${publication.get(1)}`} class="button-secondary w-button">View</Link>
+            <Link to={`/publications/${publication[0]}/${publication[1]}`} class="button-secondary w-button">View</Link>
           </div>
           <div class="w-col w-col-2">
-            <Link to={`/account/tags/${publication.get(1)}`} class="button-secondary w-button">View</Link>
+            <Link to={`/account/tags/${publication[1]}`} class="button-secondary w-button">View</Link>
           </div>
           <div class="w-col w-col-1">
             <div onClick={this.handleDeleteClick(publication)} class="button-secondary _1x1"><img src={CrossImage} class="cross"/></div>
@@ -116,10 +115,10 @@ export class Account extends Component {
               <Link to="/account/new" class="button-primary header-btn w-button">Create New Publication</Link>
             </div>
             <div class="div-block">
-              {publications.size > 0 ?
+             { publications.size > 0 ?
                 this.publicationTable(publications) :
                 this.noPublicationsMessage
-                }
+              }
             </div>
           </div>
         </div>
@@ -139,6 +138,7 @@ export class Account extends Component {
 
 Account.propTypes = {
   address: PropTypes.string,
+  addressHash: PropTypes.string,
   funds: PropTypes.number,
   publications: PropTypes.instanceOf(Immutable.List),
   getUserPublications: PropTypes.func,
@@ -148,6 +148,7 @@ Account.propTypes = {
 const mapStateToProps = (state) => {
   return {
     address: state.getIn(['neolink', 'address']),
+    addressHash: state.getIn(['neolink', 'addressHash']),
     publications: state.getIn(['blockchain', 'activePublicationList'])
   };
 };

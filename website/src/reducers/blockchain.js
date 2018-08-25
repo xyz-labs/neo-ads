@@ -167,14 +167,13 @@ const blockchainReducer = createReducer({
 
         const publications = responseArray.map((element) => {
             const values = getStackArrayValues(element);
-            console.log(values[0])
-            return [u.hexstring2ab(values[0]), u.hexstring2str(values[1]),u.hexstring2str(values[2]), values[3], values[4]]
+            return [values[0], u.hexstring2str(values[1]),u.hexstring2str(values[2]), u.hexstring2str(values[3]), values[4]]
         })
 
         console.log(publications)
         return state.merge({
             isLoading: false,
-            activePublicationList: Immutable.List(responseArray)
+            activePublicationList: Immutable.List(publications)
         });
     },
     [getUserFundsSuccess]: (state, resp) => {
