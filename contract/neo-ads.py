@@ -336,8 +336,27 @@ def GetAuctionByMonth(args):
     return [True, auctions]
 
 def GetAuctionByDay(args):
+    owner = args[0]
+    name = args[1]
+    date = args[2]
 
-    return [True, '']
+    context = GetContext()
+
+    publication_key = validatePublicationAuction(context, args)
+    if not publication_key:
+        return [False, 'Invalid auction params']
+
+    auction_key = concat(publication_key, sha1(date))
+    bids_key = concat(auction_key, 'bids')
+    bids = Get(context, bids_key)
+
+    if not bids:
+        print('No current bids')
+        return [True, []]
+
+    bids = Deserialize(bids)
+
+    return [True, bids]
 
 def GetWinningBid(args):
     return [True, '']

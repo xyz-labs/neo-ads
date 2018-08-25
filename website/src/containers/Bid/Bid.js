@@ -44,7 +44,9 @@ export class Bid extends Component {
 
   handleSubmit() {
     const { address, name, date } = this.props.match.params
-    const imageUrlArray = [imageURL_0, imageURL_1, imageURL_2, imageURL_3, imageURL_4, imageURL_5]
+
+    // not the nicest way to go about this
+    const imageUrlArray = [this.state.imageURL_0, this.state.imageURL_1, this.state.imageURL_2, this.state.imageURL_3, this.state.imageURL_4, this.state.imageURL_5]
 
     const args = [addressToScriptHash(address), name, date, this.state.adURL, imageUrlArray.join()]
     const invocationObject = createInvokeObject('placeBid', args, this.state.bid)
@@ -71,7 +73,7 @@ Bid.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    address: state.getIn(['neolink', address]),
+    address: state.getIn(['neolink', 'address']),
     activeBid: state.getIn(['blockchain', 'activeBid'])
   };
 };

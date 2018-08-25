@@ -47,7 +47,7 @@ export const addressToScriptHash = (address) => {
 export const createInvokeObject = (operation, args, assetAmount=0.00000001) => {
     const scriptHash = process.env.REACT_APP_SCRIPT_HASH
     
-    return invocationObject = {
+    return {
           scriptHash,
           operation,
           args,
