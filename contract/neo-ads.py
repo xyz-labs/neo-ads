@@ -65,12 +65,12 @@ def Main(operation, args):
 
             return GetAuctionByMonth(args)
 
-        elif operation == 'getAuctionByDay':
+        elif operation == 'getAuctionByDate':
             if nargs != 3:
                 print('Required arguments: [user] [name] [date]')
                 return [False, '3 arguments required']
                 
-            return GetAuctionByDay(args)
+            return GetAuctionByDate(args)
 
         elif operation == 'placeBid':
             if nargs != 5: 
@@ -343,7 +343,7 @@ def GetAuctionByMonth(args):
 
     return [True, auctions]
 
-def GetAuctionByDay(args):
+def GetAuctionByDate(args):
     owner = args[0]
     name = args[1]
     date = args[2]
@@ -354,13 +354,15 @@ def GetAuctionByDay(args):
     if not publication_key:
         return [False, 'Invalid auction params']
 
+    date = date + 0
+
     auction_key = concat(publication_key, sha1(date))
     bids_key = concat(auction_key, 'bids')
     bids = Get(context, bids_key)
 
     if not bids:
         print('No current bids')
-        return [True, []]
+        return [True, bids]
 
     bids = Deserialize(bids)
 

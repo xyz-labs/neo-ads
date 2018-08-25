@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 import { createAction, createReducer } from 'redux-act';
 import { u } from '@cityofzion/neon-js';
-import { testInvokeContract } from '../lib/neon';
+import { testInvokeContract, addressToScriptHash } from '../lib/neon';
 import { getStackArrayValues } from '../lib/utils';
 
 const getItemRequest = createAction('GET_ITEM_REQUEST')
@@ -108,6 +108,7 @@ export function getAuction(data) {
         const { address, name, date } = data
 
         dispatch(getItemRequest())
+
         testInvokeContract('getAuctionByMonth', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
@@ -131,8 +132,9 @@ export function getAuctionDetail(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getAuctionByDay', [address, u.str2hexstring(name), parseInt(date)])
+        testInvokeContract('getAuctionByDate', [address, u.str2hexstring(name), 1535468400])
         .then(res => {
+            console.log(res)
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
@@ -175,7 +177,6 @@ const blockchainReducer = createReducer({
             return [values[0], u.hexstring2str(values[1]),u.hexstring2str(values[2]), u.hexstring2str(values[3]), values[4]]
         })
 
-        console.log(publications)
         return state.merge({
             isLoading: false,
             activePublicationList: Immutable.List(publications)
