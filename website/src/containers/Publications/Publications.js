@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-
+import { getNewPublications, getUserPublications } from '../../reducers/blockchain'
 import './Publications.css';
 
 export class Publications extends Component {
@@ -11,7 +11,7 @@ export class Publications extends Component {
   }
 
   componentWillMount() {
-
+    this.props.getNewPublications()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -28,18 +28,25 @@ export class Publications extends Component {
 }
 
 Publications.propTypes = {
-
+  publications: PropTypes.instanceOf(Immutable.List),
+  getUserPublications: PropTypes.func,
+  getNewPublications: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
   return {
-
+    publications: state.getIn(['blockchain', 'activePublicationList'])
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
+    getUserPublications: (address) => {
+      return dispatch(getUserPublications(address))
+    },
+    getNewPublications: () => {
+      return dispatch(getNewPublications())
+    }
   };
 }
 

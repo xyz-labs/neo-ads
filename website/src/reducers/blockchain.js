@@ -3,17 +3,15 @@ import { createAction, createReducer } from 'redux-act';
 import { testInvokeContract, addressToScriptHash } from '../lib/neon';
 import { getStackArrayValues } from '../lib/utils';
 
-const getUserPublicationsRequest = createAction('GET_USER_PUBLICATIONS_REQUEST');
-const getUserPublicationsSuccess = createAction('GET_USER_PUBLICATIONS_SUCCESS');
-
-const getUserFundsRequest = createAction('GET_USER_FUNDS_REQUEST');
-const getUserFundsSuccess = createAction('GET_USER_FUNDS_SUCCESS');
-
+const getItemRequest = createAction('GET_ITEM_REQUEST');
 const getItemFailure = createAction('GET_ITEM_FAILURE');
+
+const getPublicationsSuccess = createAction('GET_PUBLICATIONS_SUCCESS');
+const getUserFundsSuccess = createAction('GET_USER_FUNDS_SUCCESS');
 
 export function getUserPublications(address) {
     return async dispatch => {
-        dispatch(getUserPublicationsRequest())
+        dispatch(getItemRequest())
 
         testInvokeContract('getUserPublications', [addressToScriptHash(address)])
         .then(res => {
@@ -22,7 +20,27 @@ export function getUserPublications(address) {
             if (result[0].value != 1) {
                 dispatch(getItemFailure())
             } else {
-                dispatch(getUserPublicationsSuccess(result[1].value))
+                dispatch(getPublicationsSuccess(result[1].value))
+            }
+        })
+        .catch(() => {
+            dispatch(getItemFailure())
+        })
+    }
+}
+
+export function getNewPublications() {
+    return async dispatch => {
+        dispatch(getItemRequest())
+
+        testInvokeContract('getNewPublications', [])
+        .then(res => {
+            const result = res.result.stack[0].value
+
+            if (result[0].value != 1) {
+                dispatch(getItemFailure())
+            } else {
+                dispatch(getPublicationsSuccess(result[1].value))
             }
         })
         .catch(() => {
@@ -33,7 +51,7 @@ export function getUserPublications(address) {
 
 export function getUserFunds(address) {
     return async dispatch => {
-        dispatch(getUserFundsRequest())
+        dispatch(getItemRequest())
 
         testInvokeContract('getUserFunds', [addressToScriptHash(address)])
         .then(res => {
@@ -58,12 +76,17 @@ const initialState = Immutable.Map({
 })
 
 const blockchainReducer = createReducer({
-    [getUserPublicationsRequest]: (state) => {
+    [getItemRequest]: (state) => {
         return state.merge({
             isLoading: true
         });
     },
-    [getUserPublicationsSuccess]: (state, resp) => {
+    [getItemFailure]: (state) => {
+        return state.merge({
+            isLoading: false
+        });
+    },
+    [getPublicationsSuccess]: (state, resp) => {
         const responseArray = getStackArrayValues(resp)
 
         return state.merge({
@@ -71,20 +94,10 @@ const blockchainReducer = createReducer({
             activePublicationList: Immutable.List(responseArray)
         });
     },
-    [getUserFundsRequest]: (state) => {
-        return state.merge({
-            isLoading: true
-        });
-    },
     [getUserFundsSuccess]: (state, resp) => {
         return state.merge({
             isLoading: false,
             funds: resp ? resp : 0
-        });
-    },
-    [getItemFailure]: (state) => {
-        return state.merge({
-            isLoading: false
         });
     },
 }, initialState);
