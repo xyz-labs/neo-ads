@@ -107,7 +107,12 @@ def Main(operation, args):
 
             return WithdrawFunds(args)
 
-        elif operation == 'TimeMachine':
+        elif operation == 'getWarpedTime': 
+            context = GetContext()
+
+            return [True, getWarpedTime(context)]
+
+        elif operation == 'setTimeMachine':
             if nargs != 1:
                 print('Required arguments: [added_time]')
                 return [False, '1 arguments required']

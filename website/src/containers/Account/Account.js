@@ -89,7 +89,12 @@ export class Account extends Component {
 
   handleDeleteClick(publication) {
     return () => {
+      const { address } = this.props
+      const args = [address, publication[1]]
 
+      const invocationObject = createInvokeObject('deletePublication', args)
+
+      this.props.sendInvoke(invocationObject)
     }
   }
   handleWithdrawClick() {
@@ -149,7 +154,7 @@ const mapStateToProps = (state) => {
   return {
     address: state.getIn(['neolink', 'address']),
     addressHash: state.getIn(['neolink', 'addressHash']),
-    publications: state.getIn(['blockchain', 'activePublicationList'])
+    publications: state.getIn(['blockchain', 'activePublicationList']),
   };
 };
 

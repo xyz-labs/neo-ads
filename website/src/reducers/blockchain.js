@@ -12,6 +12,7 @@ const getUserFundsSuccess = createAction('GET_USER_FUNDS_SUCCESS')
 const getWinningBidSuccess = createAction('GET_WINNING_BID_SUCCESS')
 const getAuctionSuccess = createAction('GET_AUCTION_SUCCESS')
 const getAuctionDetailSuccess = createAction('GET_AUCTION_DETAIL_SUCCESS')
+const getWarpedTimeSuccess = createAction('GET_WARPED_TIME_SUCCESS')
 
 /*
     TODO: input validation
@@ -149,6 +150,27 @@ export function getAuctionDetail(data) {
     }
 }
 
+export function getWarpedTime() {
+    return async dispatch => {
+
+        dispatch(getItemRequest())
+
+        testInvokeContract('getWarpedTime', [])
+        .then(res => {
+            const result = res.result.stack[0].value
+
+            if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
+                dispatch(getItemFailure())
+            } else {
+                dispatch(getWarpedTimeSuccess(result[1].value))
+            }
+        })
+        .catch(() => {
+            dispatch(getItemFailure())
+        })
+    }
+}
 const initialState = Immutable.Map({
     isLoading: false,
     funds: 0,
@@ -189,7 +211,6 @@ const blockchainReducer = createReducer({
         });
     },
     [getWinningBidSuccess]: (state, resp) => {
-        console.log(resp)
         return state.merge({
             isLoading: false,
             activeBid: Immutable.List(resp) 
@@ -207,6 +228,13 @@ const blockchainReducer = createReducer({
         return state.merge({
             isLoading: false,
             activeAuctionDetail: response
+        })
+    },
+    [getWarpedTimeSuccess]: (state, resp) => {
+        console.log(resp)
+        return state.merge({
+            isLoading: false,
+            warpedTime: resp
         })
     }
 }, initialState);

@@ -8,7 +8,10 @@ import './AuthRoute.css';
 class AuthRoute extends Route {
 
   render() {
-    const { isLoggedIn, computedMatch } = this.props;
+    const { isLoggedIn, computedMatch, isChecking } = this.props;
+
+    // Add loader
+    if (isChecking) return null;
 
     return isLoggedIn ? 
       <this.props.component match={computedMatch} /> :
@@ -20,13 +23,13 @@ AuthRoute.propTypes = {
   isLoggedIn: PropTypes.bool,
   component: PropTypes.func,
   computedMatch: PropTypes.object,
-  isLoading: PropTypes.bool
+  isChecking: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     isLoggedIn: state.getIn(['neolink', 'isLoggedIn']),
-    isLoading: state.getIn(['neolink', 'isLoading'])
+    isChecking: state.getIn(['neolink', 'isChecking'])
   }
 }
 

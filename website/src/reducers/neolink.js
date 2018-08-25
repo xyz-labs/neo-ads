@@ -3,19 +3,20 @@ import { createAction, createReducer } from 'redux-act';
 import { listenToEvent } from '../lib/neolink';
 import { addressToScriptHash } from '../lib/neon';
 
+const neoLinkCheck = createAction('NEOLINK_CHECK');
 const neoLinkRequest = createAction('NEOLINK_REQUEST');
 const updateNeoLinkStatus = createAction('UPDATE_NEOLINK_STATUS')
 const transactionSubmitted = createAction('TRANSACTION_SUBMITTED')
 
 export function checkNeoLinkStatus() {
     return async dispatch => {
-        dispatch(neoLinkRequest())
+        dispatch(neoLinkCheck())
         listenToEvent('NEOLINK_GET_EXTENSION_STATUS')
         .then(resp => {
             dispatch(updateNeoLinkStatus(resp))
         })
         .catch(() => {
-            dispatch(transactionSubmitted())
+            dispatch(updateNeoLinkStatus({isLoggedIn: false, address: ''}))
         })
     }
 }
@@ -30,7 +31,6 @@ export function sendInvoke(data) {
 
         listenToEvent('NEOLINK_SEND_INVOKE', false, data)
         .then(resp => {
-            console.log(resp)
             dispatch(transactionSubmitted())
         })
     }
@@ -38,23 +38,28 @@ export function sendInvoke(data) {
 
 const initialState = Immutable.Map({
     isLoading: false,
-    isConnected: false,
+    isChecking: false,
     isLoggedIn: false,
     address: '',
     addressHash: ''
 })
 
 const neoLinkReducer = createReducer({
+    [neoLinkCheck]: (state) => {
+        return state.merge({
+            isChecking: true
+        })
+    },
     [neoLinkRequest]: (state) => {
         return state.merge({
-            isLoading: true
+            isRequesting: true
         })
     },
     [updateNeoLinkStatus]: (state, resp) => {
         const { isLoggedIn, address } = resp
 
         return state.merge({
-            isLoading: false,
+            isChecking: false,
             isConnected: true,
             isLoggedIn: isLoggedIn,
             address: address,
@@ -63,7 +68,7 @@ const neoLinkReducer = createReducer({
     },
     [transactionSubmitted]: (state, resp) => {
         return state.merge({
-            isLoading: false,
+            isRequesting: false,
         })
     }
 }, initialState);

@@ -22,6 +22,10 @@ export class Login extends Component {
     this.checkStatus(nextProps)
   }
 
+  handleRefreshClick() {
+    window.location.reload(false)
+  }
+
   get statusMessage() {
     const { isConnected, isLoggedIn } = this.props;
     
@@ -32,7 +36,7 @@ export class Login extends Component {
           <div className="context process">
             <p className="t2 blue">NeoLink wallet not detected</p>
             <div className="div-block-11">
-              <div className="button-secondary _1x1">
+              <div className="button-secondary _1x1" onClick={this.handleRefreshClick}>
                 <img src={RefreshImage} className="cross ref"/>
               </div>
               <div className="t6 sep">or</div>
@@ -48,7 +52,7 @@ export class Login extends Component {
           <div className="context process">
             <p className="t2 blue">No account detected, please login via NeoLink</p>
             <div className="div-block-11">
-              <div className="button-secondary _1x1">
+              <div className="button-secondary _1x1" onClick={this.handleRefreshClick}>
                 <img src={RefreshImage} className="cross ref"/>
               </div>
             </div>
