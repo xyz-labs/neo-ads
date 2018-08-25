@@ -16,9 +16,26 @@ export class Header extends Component {
     this.props.checkNeoLinkStatus()
   }
 
-  componentWillReceiveProps(nextProps) {
+  get AccountButton() {
+    const { isLoggedIn } = this.props
 
+    return isLoggedIn ? 
+      (<Link to={'/account'} class="button-secondary w-button">
+        Account
+      </Link>) :
+      (<Link to={'/login'} class="button-secondary w-button">
+        Login
+      </Link>)
   }
+
+  get Address() {
+    const { address } = this.props;
+
+    return address && address.length  == 34 ?
+      address.substr(0,4) + '....' + address.substr(29,4) :
+      '';
+  }
+ 
 
   render() {
     return (
@@ -31,10 +48,8 @@ export class Header extends Component {
                </Link>
             </div>
             <div className="column-2 w-col w-col-6">
-              <div className="text-block">AyM4...6Su3</div>
-                <Link to="/account" className="button-secondary w-button">
-                  Account
-                </Link>
+              <div className="text-block">{this.Address}</div>
+                {this.AccountButton}
               </div>
           </div>
         </div>
