@@ -13,6 +13,7 @@ import NewPublication from '../../containers/NewPublication/NewPublication';
 import Publications from '../../containers/Publications/Publications';
 import UserPublications from '../../containers/UserPublications/UserPublications';
 import Auction from '../../containers/Auction/Auction';
+import AuctionDetail from '../../containers/AuctionDetail/AuctionDetail';
 import Bid from '../../containers/Bid/Bid';
 import Tags from '../../containers/Tags/Tags';
 
@@ -33,7 +34,8 @@ class App extends Component {
           <Route exact path="/publications" component={Publications} />
           <Route exact path="/publications/:address" component={UserPublications} />
           <Route exact path="/publications/:address/:name" component={Auction} />
-          <AuthRoute exact path="/publications/:address/:name/:date" component={Bid} />
+          <Route exact path="/publications/:address/:name/:date" component={AuctionDetail} />
+          <AuthRoute exact path="/publications/:address/:name/:date/bid" component={Bid} />
         </Switch>
       </div>
     );

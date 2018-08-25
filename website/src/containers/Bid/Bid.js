@@ -65,7 +65,7 @@ export class Bid extends Component {
 
 Bid.propTypes = {
   address: PropTypes.string,
-  activeBid: PropTypes.instanceOf(Immutable.Map),
+  activeBid: PropTypes.instanceOf(Immutable.List),
   sendInvoke: PropTypes.func,
   getWinningBid: PropTypes.func,
   match: PropTypes.object

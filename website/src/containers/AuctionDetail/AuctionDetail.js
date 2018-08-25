@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { getAuction } from '../../reducers/blockchain'
-import './Auction.css';
+import { getAuctionDetail } from '../../reducers/blockchain';
+import './AuctionDetail.css';
 
-export class Auction extends Component {
+export class AuctionDetail extends Component {
   constructor(props, context) {
     super(props, context);
-    
   }
 
   componentWillMount() {
-    this.props.getAuction(this.props.match.params)
+    this.props.getAuctionDetail(this.props.match.params)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,16 +20,15 @@ export class Auction extends Component {
 
   render() {
     return (
-      <div className="Auction">
-        Auction
+      <div className="AuctionDetail">
       </div>
     );
   }
 }
 
-Auction.propTypes = {
-  auction: PropTypes.instanceOf(Immutable.List),
-  getAuction: PropTypes.func
+AuctionDetail.propTypes = {
+  auctionDetail: PropTypes.instanceOf(Immutable.List),
+  getAuctionDetail: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -41,10 +39,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAuction: (data) => {
-      return dispatch(getAuction(data))
+    getAuctionDetail: (data) => {
+      return dispatch(getAuctionDetail(data))
     }
   };
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Auction);
+export default connect(mapStateToProps, mapDispatchToProps)(AuctionDetail);
