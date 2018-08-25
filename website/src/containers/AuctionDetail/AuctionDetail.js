@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import dateformat from 'dateformat';
 import { getAuctionDetail } from '../../reducers/blockchain';
 import CookieTrail from '../../components/CookieTrail/CookieTrail';
 import './AuctionDetail.css';
@@ -43,23 +44,24 @@ export class AuctionDetail extends Component {
 
   }
 
+
   bidTable(auctionDetail) {
     const array = []
 
     array.push(
-      <div class="table-head w-row" id="header">
-        <div class="col1 w-col w-col-1">
-          <p class="t3 heading">Rank</p>
+      <div className="table-head w-row" key="header">
+        <div className="col1 w-col w-col-1">
+          <p className="t3 heading">Rank</p>
         </div>
-        <div class="bid-offset w-col w-col-2">
-          <p class="t3 heading">Bid</p>
+        <div className="bid-offset w-col w-col-2">
+          <p className="t3 heading">Bid</p>
         </div>
-        <div class="w-col w-col-2">
-          <p class="t3 heading">Address Hash</p>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Address Hash</p>
         </div>
-        <div class="w-col w-col-5"></div>
-        <div class="w-col w-col-1"></div>
-        <div class="w-col w-col-1"></div>
+        <div className="w-col w-col-5"></div>
+        <div className="w-col w-col-1"></div>
+        <div className="w-col w-col-1"></div>
       </div>
     )
 
@@ -69,24 +71,30 @@ export class AuctionDetail extends Component {
       const subHash = addressHash.substr(0,4) + '....' + addressHash.substr(36,4)
 
       array.push(
-        <div class="table-body w-row">
-          <div class="col1 w-col w-col-1">
-            <p class="t3">{idx + 1}</p>
+        <div className="table-body w-row" key={idx}>
+          <div className="col1 w-col w-col-1">
+            <p className="t3">{idx + 1}</p>
           </div>
-          <div class="bid-offset w-col w-col-2">
-            <p class="t7">{gasAmount} GAS</p>
+          <div className="bid-offset w-col w-col-2">
+            <p className="t7">{gasAmount} GAS</p>
           </div>
-          <div class="w-col w-col-2">
-            <p class="t7">{subHash}</p>
+          <div className="w-col w-col-2">
+            <p className="t7">{subHash}</p>
           </div>
-          <div class="w-col w-col-5"></div>
-          <div class="w-col w-col-1"></div>
-          <div class="w-col w-col-1"></div>
+          <div className="w-col w-col-5"></div>
+          <div className="w-col w-col-1"></div>
+          <div className="w-col w-col-1"></div>
         </div>
       )
     })
 
     return array
+  }
+  
+  getDateHeading(date) {
+    const newDate = new Date(date*1000) 
+  
+    return dateformat(newDate, 'mmmm dS, yyyy')
   }
 
   render() {
@@ -94,18 +102,18 @@ export class AuctionDetail extends Component {
     const { name, address, date } = this.props.match.params
 
     return (
-      <div class="content">
-        <div class="content-body">
-          <div class="general-header-2 w-clearfix">
+      <div className="content">
+        <div className="content-body">
+          <div className="general-header-2 w-clearfix">
             <div>
-              <h2 class="h2">August 26, 2018</h2>
+              <h2 className="h2">{this.getDateHeading(date)}</h2>
             </div>
             <CookieTrail 
               items={this.state.cookieItems}
               />
-            <Link to={`/publications/${address}/${name}/${date}/bid`} class="button-primary header-btn w-button">Place Bid</Link>
+            <Link to={`/publications/${address}/${name}/${date}/bid`} className="button-primary header-btn w-button">Place Bid</Link>
           </div>
-          <div class="table">
+          <div className="table">
             {this.bidTable(auctionDetail)}
           </div>
         </div>

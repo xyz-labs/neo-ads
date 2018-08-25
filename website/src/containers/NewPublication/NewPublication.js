@@ -61,20 +61,20 @@ export class NewPublication extends Component {
 
   render() {
     return (
-      <div class="content">
-        <div class="content-body">
-          <div class="general-header-2 w-clearfix">
+      <div className="content">
+        <div className="content-body">
+          <div className="general-header-2 w-clearfix">
             <CookieTrail 
                 items={this.state.cookie}
               />
-              <h2 class="h2">Create a new publication</h2>
+              <h2 className="h2">Create a new publication</h2>
             </div>
           </div>
-          <div class="w-form">
+          <div className="w-form">
             <form id="email-form" name="email-form" data-name="Email Form" onSubmit={this.handleSubmit}>
-              <div class="div-block-4">
-                <label for="name" class="t1">Publication Name</label>
-                <div class="div-block-2">
+              <div className="div-block-4">
+                <label for="name" className="t1">Publication Name</label>
+                <div className="div-block-2">
                   <input 
                       type="text" 
                       className="t4 field w-input" 
@@ -86,9 +86,9 @@ export class NewPublication extends Component {
                     />
                 </div>
               </div>
-              <div class="div-block-4">
-                <label for="name" class="t1">Website URL</label>
-                <div class="div-block-2">
+              <div className="div-block-4">
+                <label for="name" className="t1">Website URL</label>
+                <div className="div-block-2">
                   <input 
                     type="text" 
                     className="t4 field w-input" 
@@ -101,9 +101,9 @@ export class NewPublication extends Component {
                   />
                 </div>
               </div>
-              <div class="div-block-4">
-                <label for="name" class="t1">Category</label>
-                <div class="div-block-2 drop-down">
+              <div className="div-block-4">
+                <label for="name" className="t1">Category</label>
+                <div className="div-block-2 drop-down">
                   <select 
                     id="field" 
                     name="field" 
@@ -121,7 +121,7 @@ export class NewPublication extends Component {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-              </div><input type="submit" value="Create Publication" data-wait="Please wait..." class="button-primary w-button"/></form>
+              </div><input type="submit" value="Create Publication" data-wait="Please wait..." className="button-primary w-button"/></form>
           </div>
         </div>
     );

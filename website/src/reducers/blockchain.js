@@ -86,7 +86,7 @@ export function getWinningBid(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getWinningBid', [address, u.str2hexstring(name), parseInt(date)])
+        testInvokeContract('getAuctionWinner', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
 

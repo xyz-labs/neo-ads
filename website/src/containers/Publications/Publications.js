@@ -25,7 +25,7 @@ export class Publications extends Component {
     const array = []
 
     array.push(
-      <div className="table-head w-row" id="header">
+      <div className="table-head w-row" key="header">
         <div className="w-col w-col-2">
           <p className="t3"></p>
         </div>
@@ -45,7 +45,7 @@ export class Publications extends Component {
 
     publications.forEach((publication, idx) => {
       array.push(
-        <div className="table-body w-row" id={idx}>
+        <div className="table-body w-row" key={idx}>
           <div className="w-col w-col-2">
             <p className="t3">{publication[1]}</p>
           </div>

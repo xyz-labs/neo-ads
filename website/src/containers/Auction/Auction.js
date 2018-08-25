@@ -38,20 +38,18 @@ export class Auction extends Component {
     const { name, address } = this.props.match.params
     const date = this.state.activeFirstDate.getTime() / 1000
 
-    if (name && address) {
-      this.setState({
-        cookieItems: [
-          {
-            name: 'Publications',
-            link: '/publications'
-          },
-          {
-            name: name,
-            link: `/publications/${address}/${name}`
-          }
-        ]
-      })
-    }
+    this.setState({
+      cookieItems: [
+        {
+          name: 'Publications',
+          link: '/publications'
+        },
+        {
+          name: name,
+          link: `/publications/${address}/${name}`
+        }
+      ]
+    })
 
     this.props.getAuction({name, address, date})
   }
@@ -71,7 +69,7 @@ export class Auction extends Component {
 
   handleDayClick(date) {
     this.setState({
-      dateClicked: (date.getTime() / 1000) + 86400,
+      dateClicked: (date.getTime() / 1000),
       redirect: true
     })
   }
@@ -117,7 +115,7 @@ export class Auction extends Component {
 
   getGasByDate({date, view}) {
     const { auction, isLoading } = this.props
-    const item = auction && auction.get(date.getDate())
+    const item = auction && auction.get(date.getDate() - 1)
     
     if (!this.checkValidItem(item, date)) return <div className="react-calendar_price-false">0 GAS</div>
 
@@ -142,11 +140,11 @@ export class Auction extends Component {
     const { name, address } = this.props.match.params
 
     return (
-      <div class="content">
-        <div class="content-body">
-          <div class="general-header-2 w-clearfix">
+      <div className="content">
+        <div className="content-body">
+          <div className="general-header-2 w-clearfix">
             <div>
-              <h2 class="h2">Select a day to bid on</h2>
+              <h2 className="h2">Select a day to bid on</h2>
             </div>
             <CookieTrail
                 items={this.state.cookieItems} 

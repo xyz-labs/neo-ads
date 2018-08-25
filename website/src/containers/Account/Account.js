@@ -30,55 +30,55 @@ export class Account extends Component {
   }
 
   get noPublicationsMessage() {
-    return <div class="no-pubs">You haven't created any publications. Click the button above to get started!</div>
+    return <div className="no-pubs">You haven't created any publications. Click the button above to get started!</div>
   }
 
   publicationTable(publications) {
     const array = []
 
     array.push(
-      <div class="table-head w-row" id="header">
-        <div class="w-col w-col-2">
-          <p class="t3"> </p>
+      <div className="table-head w-row" key="header">
+        <div className="w-col w-col-2">
+          <p className="t3"> </p>
         </div>
-        <div class="w-col w-col-3">
-          <p class="t3 heading">Website</p>
+        <div className="w-col w-col-3">
+          <p className="t3 heading">Website</p>
         </div>
-        <div class="w-col w-col-2">
-          <p class="t3 heading">Category</p>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Category</p>
         </div>
-        <div class="w-col w-col-2">
-          <p class="t3 heading">Auction</p>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Auction</p>
         </div>
-        <div class="w-col w-col-2">
-          <p class="t3 heading">Site Tags</p>
+        <div className="w-col w-col-2">
+          <p className="t3 heading">Site Tags</p>
         </div>
-        <div class="w-col w-col-1">
-          <p class="t3 heading">Delete</p>
+        <div className="w-col w-col-1">
+          <p className="t3 heading">Delete</p>
         </div>
       </div>
     )
 
     publications.forEach((publication, idx) => {
       array.push(
-        <div class="table-body w-row" id={idx}>
-          <div class="w-col w-col-2">
-            <p class="t3">{publication[1]}</p>
+        <div className="table-body w-row" key={idx}>
+          <div className="w-col w-col-2">
+            <p className="t3">{publication[1]}</p>
           </div>
-          <div class="w-col w-col-3">
-            <p class="t7">{publication[2]}</p>
+          <div className="w-col w-col-3">
+            <p className="t7">{publication[2]}</p>
           </div>
-          <div class="w-col w-col-2">
-            <p class="t7">{publication[3]}</p>
+          <div className="w-col w-col-2">
+            <p className="t7">{publication[3]}</p>
           </div>
-          <div class="w-col w-col-2">
-            <Link to={`/publications/${publication[0]}/${publication[1]}`} class="button-secondary w-button">View</Link>
+          <div className="w-col w-col-2">
+            <Link to={`/publications/${publication[0]}/${publication[1]}`} className="button-secondary w-button">View</Link>
           </div>
-          <div class="w-col w-col-2">
-            <Link to={`/account/tags/${publication[1]}`} class="button-secondary w-button">View</Link>
+          <div className="w-col w-col-2">
+            <Link to={`/account/tags/${publication[1]}`} className="button-secondary w-button">View</Link>
           </div>
-          <div class="w-col w-col-1">
-            <div onClick={this.handleDeleteClick(publication)} class="button-secondary _1x1"><img src={CrossImage} class="cross"/></div>
+          <div className="w-col w-col-1">
+            <div onClick={this.handleDeleteClick(publication)} className="button-secondary _1x1"><img src={CrossImage} className="cross"/></div>
           </div>
         </div>
       )
@@ -106,15 +106,15 @@ export class Account extends Component {
 
     return (
       <div>
-         <div class="content">
-          <div class="content-body">
-            <div class="general-header-2">
+         <div className="content">
+          <div className="content-body">
+            <div className="general-header-2">
               <div>
-                <h2 class="h2">My Publications</h2>
+                <h2 className="h2">My Publications</h2>
               </div>
-              <Link to="/account/new" class="button-primary header-btn w-button">Create New Publication</Link>
+              <Link to="/account/new" className="button-primary header-btn w-button">Create New Publication</Link>
             </div>
-            <div class="div-block">
+            <div className="div-block">
              { publications.size > 0 ?
                 this.publicationTable(publications) :
                 this.noPublicationsMessage
@@ -122,13 +122,13 @@ export class Account extends Component {
             </div>
           </div>
         </div>
-        <div class="widthraw">
+        <div className="widthraw">
           <div>
-            <h2 class="h2">Account Funds</h2>
+            <h2 className="h2">Account Funds</h2>
           </div>
-          <div class="div-block-12">
-            <p class="t4 funds">{funds ? funds : 0} GAS</p>
-            <div onClick={this.handleWithdrawClick} class="button-secondary w-button">Withdraw</div>
+          <div className="div-block-12">
+            <p className="t4 funds">{funds ? funds : 0} GAS</p>
+            <div onClick={this.handleWithdrawClick} className="button-secondary w-button">Withdraw</div>
           </div>
         </div>
       </div>
