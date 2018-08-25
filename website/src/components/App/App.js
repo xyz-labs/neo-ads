@@ -20,7 +20,7 @@ import Tags from '../../containers/Tags/Tags';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="body">
         <header>
           <Header/>
         </header>
