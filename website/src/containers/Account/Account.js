@@ -4,12 +4,15 @@ import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserPublications, getUserFunds } from '../../reducers/blockchain'
-
+import { sendInvoke } from '../../reducers/neolink'
+import { addressToScriptHash, createInvokeObject } from '../../lib/neon'
 import './Account.css';
 
 export class Account extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.handleWithdrawClick = this.handleWithdrawClick.bind(this)
   }
 
   componentWillMount() {
@@ -21,6 +24,15 @@ export class Account extends Component {
 
   componentWillReceiveProps(nextProps) {
 
+  }
+
+  handleWithdrawClick() {
+    const { address, funds } = this.props
+
+    const args = [addressToScriptHash(address), funds]
+    const invocationObject = createInvokeObject('withdrawFunds', args)
+
+    this.props.sendInvoke(invocationObject)
   }
 
   render() {
@@ -57,6 +69,9 @@ const mapDispatchToProps = (dispatch) => {
     getUserFunds: (address) => {
       return dispatch(getUserFunds(address))
     },
+    sendInvoke: (data) => {
+      return dispatch(sendInvoke(data))
+    }
   };
 }
 
