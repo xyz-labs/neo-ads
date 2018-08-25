@@ -9,6 +9,8 @@ from boa.builtins import concat, sha1, range
 OWNER = b'#\xba\'\x03\xc52c\xe8\xd6\xe5"\xdc2 39\xdc\xd8\xee\xe9'
 
 SECONDS_IN_DAY = 86400
+SECONDS_IN_HOUR = 3600
+TIMEZONE = 9
 
 MAX = 18446744073709000000
 MIN = 100000
@@ -141,7 +143,7 @@ def CreatePublication(args):
     else:
         new_publications = []
 
-    first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY)
+    first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * + SECONDS_IN_HOUR * -TIMEZONE
     is_active = True
 
     new_publication = [sender, name, url, category, first_date, is_active]
@@ -421,7 +423,7 @@ def validatePublicationAuction(context, args):
         print('Date must be within bounds')
         return False
     
-    modulo = date % SECONDS_IN_DAY
+    modulo = (date - SECONDS_IN_HOUR * -TIMEZONE) % SECONDS_IN_DAY
     if modulo != 0:
         print('Date must be 00:00 in contract timezone')
         return False

@@ -19,6 +19,7 @@ export class AuctionDetail extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="AuctionDetail">
       </div>
@@ -33,7 +34,7 @@ AuctionDetail.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    auction: state.getIn(['blockchain', 'activeAuction'])
+    auctionDetail: state.getIn(['blockchain', 'activeAuctionDetail'])
   };
 };
 

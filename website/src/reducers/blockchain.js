@@ -26,6 +26,7 @@ export function getUserPublications(address) {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getPublicationsSuccess(result[1].value))
@@ -46,6 +47,7 @@ export function getNewPublications() {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getPublicationsSuccess(result[1].value))
@@ -66,6 +68,7 @@ export function getUserFunds(address) {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getUserFundsSuccess(result[1].value))
@@ -88,6 +91,7 @@ export function getWinningBid(data) {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getWinningBidSuccess(result[1].value))
@@ -104,12 +108,12 @@ export function getAuction(data) {
         const { address, name, date } = data
 
         dispatch(getItemRequest())
-
         testInvokeContract('getAuctionByMonth', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getAuctionSuccess(result[1].value))
@@ -132,6 +136,7 @@ export function getAuctionDetail(data) {
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
+                console.log(u.hexstring2str(result[1].value))
                 dispatch(getItemFailure())
             } else {
                 dispatch(getAuctionDetailSuccess(result[1].value))
@@ -190,7 +195,6 @@ const blockchainReducer = createReducer({
         })
     },
     [getAuctionSuccess]: (state, resp) => {
-        console.log(resp)
         return state.merge({
             isLoading: false,
             activeAuction: Immutable.List(resp) 
