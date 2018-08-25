@@ -40,7 +40,7 @@ export class Account extends Component {
 
     return (
       <div className="Account">
-        <Link to="/publications/a/b/3">Account</Link>
+        <Link to="/publications/a/b">Account</Link>
       </div>
     );
   }

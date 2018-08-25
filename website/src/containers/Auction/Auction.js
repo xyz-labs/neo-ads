@@ -3,16 +3,22 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { getAuction } from '../../reducers/blockchain'
+import { getStartOfMonth } from '../../lib/utils';
 import './Auction.css';
 
 export class Auction extends Component {
   constructor(props, context) {
     super(props, context);
+
+    let date = new Date();
     
+    this.state = {
+      activeFirstDate: getStartOfMonth(date),
+    }
   }
 
   componentWillMount() {
-    this.props.getAuction(this.props.match.params)
+    // this.props.getAuction(this.props.match.params)
   }
 
   componentWillReceiveProps(nextProps) {
