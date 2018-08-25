@@ -305,6 +305,7 @@
 .t3.heading {
   color: rgba(33, 33, 104, .4);
   font-size: 15px;
+  margin-left: 0vw !important;
 }
 
 .t4 {
@@ -1045,6 +1046,12 @@
   border-color: rgba(33, 33, 104, .1);
   border-radius: 6px;
   background-color: #f2f3f7;
+}
+
+.no-pubs{
+  padding-top: 70px;
+  text-align: center;
+  color: #21216840;
 }
 
 html.w-mod-js *[data-ix="new-interaction"] {
