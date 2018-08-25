@@ -11,7 +11,7 @@ export const setupNeonJS = () => {
           neoscan: neoScanAddress
         }
     }
-
+    console.log(u.hexstring2str('4e6f2062696473'))
     const network = new rpc.Network(config);
       
     Neon.add.network(network);

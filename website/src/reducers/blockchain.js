@@ -202,11 +202,11 @@ const blockchainReducer = createReducer({
         })
     },
     [getAuctionDetailSuccess]: (state, resp) => {
-        const response = resp.reverse ? resp.reverse() : resp
+        const response = resp.reverse ?  Immutable.List(resp.reverse()) : Immutable.List()
 
         return state.merge({
             isLoading: false,
-            activeAuctionDetail: Immutable.List(response)
+            activeAuctionDetail: response
         })
     }
 }, initialState);

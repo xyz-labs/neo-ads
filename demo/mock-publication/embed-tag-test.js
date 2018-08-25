@@ -1,11 +1,18 @@
 //neon-js libary import
-<script src="./lib/browser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@cityofzion/neon-js@3.10.1/lib/browser.min.js"></script>
 
 //jquery libary import-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js" integrity="sha256-YCbKJH6u4siPpUlk130udu/JepdKVpXjdEyzje+z1pE=" crossorigin="anonymous"></script>
 
 <script>
 jQuery(document).ready(function ($) {
+var config = {name: 'Private', extra: { neoscan: 'http://localhost:4000/api/main_net'}
+var network = new Neon.rpc.Network(config); 
+Neon.add.network(network); 
+var script = Neon.create.script({scriptHash: '926c2d2cbe6422473225b382c81379193452bfa6', operation: 'getAuctionWinner', args: ['23ba2703c53263e8d6e522dc32203339dcd8eee9', 'Block Sports', 1535468400]})
+var test = Neon.rpc.Query.invokeScript(script).execute('http://127.0.0.1:30333')
+console.log(test)
+console.log('test')
 
 //publisherID (Public Address)
 var id = 'xxx'

@@ -69,8 +69,8 @@ export class Bid extends Component {
     const imageUrlArray = [this.state.imageURL_0, this.state.imageURL_1]
 
     const args = [wallet.getAddressFromScriptHash(u.reverseHex(address)), name, parseInt(date), this.state.adURL, imageUrlArray]
-    console.log(args)
-    const invocationObject = createInvokeObject('placeBid', args, this.state.bid)
+  
+    const invocationObject = createInvokeObject('placeNewBid', args, this.state.bid)
 
     this.props.sendInvoke(invocationObject)
   }

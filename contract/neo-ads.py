@@ -72,12 +72,12 @@ def Main(operation, args):
                 
             return GetAuctionByDate(args)
 
-        elif operation == 'placeBid':
+        elif operation == 'placeNewBid':
             if nargs != 5: 
                 print('required arguments: [owner] [name] [date] [ad_url] [image_urls]')
                 return [False, '5 arguments required']
 
-            return PlaceBid(args)
+            return PlaceNewBid(args)
 
         elif operation == 'getAuctionWinner':
             if nargs != 3:
@@ -85,6 +85,13 @@ def Main(operation, args):
                 return [False, '3 arguments required']
 
             return GetAuctionWinner(args)
+
+        elif operation == 'getCurrentAuctionWinner':
+            if nargs != 2:
+                print('Required arguments: [user] [name]')
+                return [False, '2 arguments required']
+
+            return GetCurrentAuctionWinner(args)
 
         elif operation == 'getUserFunds':
             if nargs != 1:
@@ -146,7 +153,7 @@ def CreatePublication(args):
     else:
         new_publications = []
 
-    first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * + SECONDS_IN_HOUR * -TIMEZONE
+    first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
     is_active = True
 
     new_publication = [sender, name, url, category, first_date, is_active]
@@ -254,7 +261,7 @@ def GetNewPublications():
 
     return [True, new_publications]
 
-def PlaceBid(args):
+def PlaceNewBid(args):
     owner = args[0]
     name = args[1]
     date = args[2]
@@ -398,6 +405,34 @@ def GetAuctionWinner(args):
 
     return [True, best_bid]
 
+def GetCurrentAuctionWinner(args):
+    owner = args[0]
+    name = args[1]
+    date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
+    args.append(date)
+
+    context = GetContext()
+
+    publication_key = validatePublicationAuction(context, args)
+    if not publication_key:
+        return [False, 'Invalid auction params'] 
+
+    date = date + 0
+
+    auction_key = concat(publication_key, sha1(date))
+    bids_key = concat(auction_key, 'bids')
+    bids = Get(context, bids_key)
+
+    if not bids:
+        print('No bids')
+        return [False, 'No bids']
+
+    bids = Deserialize(bids)
+
+    best_bid = bids[len(bids) - 1]
+
+    return [True, best_bid]
+
 def GetUserFunds(args):
     user = args[0]
 
@@ -446,7 +481,9 @@ def WithdrawFunds(args):
 def validatePublicationAuction(context, args):
     owner = args[0]
     name = args[1]
-    date = args[2]          
+    date = args[2]   
+
+    date = date + 0       
 
     if date < MIN or date > MAX:
         print('Date must be within bounds')
