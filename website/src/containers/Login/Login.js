@@ -64,14 +64,17 @@ export class Login extends Component {
 
   checkStatus(props) {
     const { isConnected, isLoggedIn, history } = props;
-
     if (isConnected && isLoggedIn) {
       history.push('/account')
     }
   }
 
   render() {
-    return null
+    return (
+      <div>
+        {this.statusMessage}
+      </div>
+    )
   }
 }
 

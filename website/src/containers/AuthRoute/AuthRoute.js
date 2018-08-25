@@ -19,12 +19,14 @@ class AuthRoute extends Route {
 AuthRoute.propTypes = {
   isLoggedIn: PropTypes.bool,
   component: PropTypes.func,
-  computedMatch: PropTypes.object
+  computedMatch: PropTypes.object,
+  isLoading: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
-    isLoggedIn: state.getIn(['neolink', 'isLoggedIn'])
+    isLoggedIn: state.getIn(['neolink', 'isLoggedIn']),
+    isLoading: state.getIn(['neolink', 'isLoading'])
   }
 }
 

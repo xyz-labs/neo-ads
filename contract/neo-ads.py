@@ -107,6 +107,16 @@ def Main(operation, args):
 
             return WithdrawFunds(args)
 
+        elif operation == 'TimeMachine':
+            if nargs != 1:
+                print('Required arguments: [added_time]')
+                return [False, '1 arguments required']
+
+            return TimeMachine(args)
+
+        elif operation == 'ResetTimeMachine':
+            return ResetTimeMachine()
+
     return [False, 'No operation selected']
 
 def CreatePublication(args):
@@ -153,7 +163,7 @@ def CreatePublication(args):
     else:
         new_publications = []
 
-    first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
+    first_date = getWarpedTime(context) + (SECONDS_IN_DAY - getWarpedTime(context) % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
     is_active = True
 
     new_publication = [sender, name, url, category, first_date, is_active]
@@ -408,7 +418,7 @@ def GetAuctionWinner(args):
 def GetCurrentAuctionWinner(args):
     owner = args[0]
     name = args[1]
-    date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
+    date = getWarpedTime(context) + (SECONDS_IN_DAY - getWarpedTime(context) % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
     args.append(date)
 
     context = GetContext()
@@ -477,6 +487,38 @@ def WithdrawFunds(args):
     OnWithdraw(sender, amount)
     
     return [True, '']
+
+def TimeMachine(args):
+    added_time = args[0]
+
+    if not CheckWitness(OWNER):
+        print('Only the contract owner may use the time machine')
+        return [False, 'Witness must be owner']
+
+    context = GetContext()
+
+    time_warp = Get(context, 'time_machine')
+
+    new_time_warp = time_warp + added_time
+
+    Put(context, 'time_machine', new_time_warp)
+
+    return [True, '']
+
+def ResetTimeMachine():
+    if not CheckWitness(OWNER):
+        print('Only the contract owner may reset the time machine')
+        return [False, 'Witness must be owner']
+
+    Put('time_machine', 0)
+
+    return [True]
+
+def getWarpedTime(context):
+    time = GetTime()
+    time_warp = Get(context, 'time_machine')
+
+    return time + time_warp
 
 def validatePublicationAuction(context, args):
     owner = args[0]

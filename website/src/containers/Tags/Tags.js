@@ -61,7 +61,7 @@ export class Tags extends Component {
                 jQuery(document).ready(function ($) {
                   var network = new Neon.rpc.Network({name: '${networkName}', extra: { neoscan: '${neoscanAddr}'}}); 
                   Neon.default.add.network(network); 
-                  var script = Neon.default.create.script({scriptHash: '${scriptHash}', operation: 'getCurrentWinner', args: ['${addressHash}', '${name}']});
+                  var script = Neon.default.create.script({scriptHash: '${scriptHash}', operation: 'getCurrentAuctionWinner', args: ['${addressHash}', '${name}']});
                   Neon.rpc.Query.invokeScript(script).execute('${seedAddr}').
                   then((res) => {
                     var result = res.result.stack[0];
@@ -98,13 +98,13 @@ export class Tags extends Component {
 }
 
 Tags.propTypes = {
-  address: PropTypes.string,
+  addressHash: PropTypes.string,
   match: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-    address: state.getIn(['neolink', 'address']),
+    addressHash: state.getIn(['neolink', 'addressHash']),
   };
 };
 
