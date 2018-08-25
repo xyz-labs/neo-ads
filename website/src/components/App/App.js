@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import AuthRoute from '../../containers/AuthRoute/AuthRoute';
 
@@ -13,6 +14,7 @@ import Publications from '../../containers/Publications/Publications';
 import UserPublications from '../../containers/UserPublications/UserPublications';
 import Auction from '../../containers/Auction/Auction';
 import Bid from '../../containers/Bid/Bid';
+import Tags from '../../containers/Tags/Tags';
 
 class App extends Component {
   render() {
@@ -27,6 +29,7 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <AuthRoute exact path="/account" component={Account} />
           <AuthRoute exact path="/account/new" component={NewPublication} />
+          <AuthRoute exact path="/account/tags/:name" component={Tags}/>
           <Route exact path="/publications" component={Publications} />
           <Route exact path="/publications/:address" component={UserPublications} />
           <Route exact path="/publications/:address/:name" component={Auction} />
@@ -35,6 +38,10 @@ class App extends Component {
       </div>
     );
   }
+}
+
+const mapStateToProps = (state) => {
+  return 
 }
 
 export default App;

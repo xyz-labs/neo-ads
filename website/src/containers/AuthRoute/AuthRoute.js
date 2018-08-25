@@ -8,10 +8,12 @@ import './AuthRoute.css';
 class AuthRoute extends Route {
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, computedMatch } = this.props;
+
+    console.log(this.props)
 
     return isLoggedIn ? 
-      <this.props.component/> :
+      <this.props.component match={computedMatch} /> :
       <Redirect to="/login"/>
   }
 }
