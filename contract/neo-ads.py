@@ -47,7 +47,7 @@ def Main(operation, args):
         elif operation == 'getUserPublications':
             if nargs != 1:
                 print('Required arguments: [user]')
-                return [False, '1 arguments required']
+                return [False, '1 argument required']
 
             return GetUserPublications(args)
 
@@ -57,11 +57,17 @@ def Main(operation, args):
             return GetNewPublications()
 
         elif operation == 'getAuctionByMonth':
+            if nargs != 3:
+                print('Required arguments: [user] [name] [date]')
+                return [False, '3 arguments required']
 
             return GetAuctionByMonth(args)
 
         elif operation == 'getAuctionByDay':
-
+            if nargs != 3:
+                print('Required arguments: [user] [name] [date]')
+                return [False, '3 arguments required']
+                
             return GetAuctionByDay(args)
 
         elif operation == 'placeBid':

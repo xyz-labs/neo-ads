@@ -22,6 +22,11 @@ export function checkNeoLinkStatus() {
 export function sendInvoke(data) {
     return async dispatch => {
         dispatch(neoLinkRequest())
+
+        /*
+            Could neonjs testinvoke here first
+        */
+
         listenToEvent('NEOLINK_SEND_INVOKE', false, data)
         .then(resp => {
             dispatch(transactionSubmitted())
