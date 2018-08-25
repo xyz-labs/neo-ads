@@ -52,9 +52,48 @@ export class Bid extends Component {
 
   render() {
     return (
-      <div className="Bid">
-        Bid
-      </div>
+      <div class="content">
+        <div class="content-body">
+          <div class="general-header-2 w-clearfix">
+            <div>
+              <h2 class="h2">August 26, 2018</h2>
+            </div>
+            <div class="cookie-trail"><a href="#" class="t5">Publications</a>
+              <p class="t5">   &gt;  </p><a href="#" class="t5">Crypto Mag</a>
+              <p class="t5">   &gt;  </p><a href="#" class="t5">Auction</a></div>
+          </div>
+          <div class="w-form">
+            <form id="email-form" name="email-form" data-name="Email Form">
+              <div class="div-block-4 gas"><label for="name" class="t1">Bid</label>
+                <div class="div-block-2"><input type="text" class="t4 field w-input" maxlength="256" name="bid" data-name="Bid" placeholder="0.00" id="bid" required=""/>
+                  <div class="div-block-3">
+                    <p class="t4 mark">GAS</p>
+                  </div>
+                </div><label for="name" id="bid-tag" class="t9 tag">Minimum 32.5 GAS</label></div>
+              <div class="div-block-4"><label for="name" class="t1">Ad URL</label>
+                <div class="div-block-2"><input type="text" class="t4 field w-input" maxlength="256" name="ad-url" data-name="Ad Url" placeholder="https://" id="ad-url" required=""/></div>
+              </div>
+              <div class="div-block-4"><label for="name" class="t1 listheading">Ad Image URLs</label>
+                <div class="div-block-5">
+                  <div class="div-block-6">
+                    <div class="div-block-2">
+                      <input type="text" class="t4 field w-input" maxlength="256" name="ad-url-2" data-name="Ad Url 2" placeholder="https://" id="ad-url-2" required=""/>
+                    </div>
+                    <label for="name" id="bid-tag" class="t9 tag">Leaderboard: 728px x 90px</label>
+                  </div>
+                  <div class="div-block-6">
+                    <div class="div-block-2">
+                      <input type="text" class="t4 field w-input" maxlength="256" name="ad-url-2" data-name="Ad Url 2" placeholder="https://" id="ad-url-2" required=""/>
+                    </div>
+                    <label for="name" id="bid-tag" class="t9 tag">Medium Rectangle (M-REC): 300px x 250px</label>
+                  </div>
+                </div>
+              </div>
+              <input type="submit" value="Place Bid" data-wait="Please wait..." class="button-primary submit w-button"/>
+              </form>
+            </div>
+          </div>
+        </div>
     );
   }
 }

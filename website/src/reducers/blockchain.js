@@ -132,9 +132,8 @@ export function getAuctionDetail(data) {
 
         dispatch(getItemRequest())
 
-        testInvokeContract('getAuctionByDate', [address, u.str2hexstring(name), 1535468400])
+        testInvokeContract('getAuctionByDate', [address, u.str2hexstring(name), parseInt(date)])
         .then(res => {
-            console.log(res)
             const result = res.result.stack[0].value
 
             if (result[0].value != 1) {
@@ -155,7 +154,8 @@ const initialState = Immutable.Map({
     funds: 0,
     activePublicationList: Immutable.List(),
     activeBid: Immutable.List(),
-    activeAuction: Immutable.List()
+    activeAuction: Immutable.List(),
+    activeAuctionDetail: Immutable.List()
 })
 
 const blockchainReducer = createReducer({
@@ -202,10 +202,9 @@ const blockchainReducer = createReducer({
         })
     },
     [getAuctionDetailSuccess]: (state, resp) => {
-        console.log(resp)
         return state.merge({
             isLoading: false,
-            activeAuctionDetail: Immutable.List(resp)
+            activeAuctionDetail: Immutable.List(resp.reverse())
         })
     }
 }, initialState);

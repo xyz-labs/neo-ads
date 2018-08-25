@@ -10,7 +10,7 @@ const CookieTrail = ({ items }) => {
   const mapItems = items.map((item, idx) => {
     return (
       <Link key={idx} to={item.link} className="t5 cookie-trail-item">
-        {item.name} &gt;
+        {item.name} {idx == items.length - 1 ? null : <inline>&gt;</inline>}
       </Link>
     )
   });

@@ -27,7 +27,7 @@ export class Publications extends Component {
     array.push(
       <div className="table-head w-row" id="header">
         <div className="w-col w-col-2">
-          <p className="t3"> </p>
+          <p className="t3"></p>
         </div>
         <div className="w-col w-col-3">
           <p className="t3 heading">Website</p>
