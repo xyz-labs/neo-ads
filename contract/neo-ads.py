@@ -16,6 +16,11 @@ MIN = 100000
 OnRefund = RegisterAction('refund', 'addr_to', 'amount')
 OnWithdraw = RegisterAction('withdraw', 'addr_to', 'amount')
 
+neo_asset_id = b'\x9b|\xff\xda\xa6t\xbe\xae\x0f\x93\x0e\xbe`\x85\xaf\x90\x93\xe5\xfeV\xb3J\\"\x0c\xcd\xcfn\xfc3o\xc5'
+
+gas_asset_id = b'\xe7-(iy\xeel\xb1\xb7\xe6]\xfd\xdf\xb2\xe3\x84\x10\x0b\x8d\x14\x8ewX\xdeB\xe4\x16\x8bqy,`'
+
+
 def Main(operation, args):
     trigger = GetTrigger()
 
@@ -78,6 +83,10 @@ def Main(operation, args):
             return GetUserFunds(args)
 
         elif operation == 'withdrawFunds':
+            if nargs != 2:
+                print('Required arguments: [sender] [amount]')
+                return [False, '2 arguments required']
+
             return WithdrawFunds(args)
 
     return [False, 'No operation selected']
@@ -248,29 +257,9 @@ def PlaceBid(args):
     user = attachments[1]
     bid_amount = attachments[3]
 
-    if date < MIN or date > MAX:
-        print('Date must be within bounds')
-        return [False, 'Date must be within bounds']
-
-    modulo = date % SECONDS_IN_DAY
-    if modulo != 0:
-        print('Date must be 00:00')
-        return [False, 'Date must be 00:00']
-
-    publications_key = concat('publications', owner)
-    publication_key = concat(publications_key, sha1(name))
-    publication = Get(context, publication_key)
-
-    if not publication:
-        print('Publication does not exist')
-        return [False, 'Publication does not exist']
-
-    else:
-        publication = Deserialize(publication)
-
-        if not publication[4]: 
-            print('Publication is not currently active')
-            return [False, 'Publication is not active']
+    publication_key = validatePublicationAuction(context, args)
+    if not publication_key:
+        return [False, 'Invalid auction params'] 
 
     if time >= date:
         print('Auction has finished')
@@ -320,8 +309,31 @@ def PlaceBid(args):
     return [True, '']
 
 def GetAuctionByMonth(args):
+    owner = args[0]
+    name = args[1]
+    date = args[2]
 
-    return [True, '']
+    context = GetContext()
+
+    publication_key = validatePublicationAuction(context, args)
+    if not publication_key:
+        return [False, 'Invalid auction params'] 
+
+    auctions = []
+
+    # For simplicity, assume given first day of month & always retreive 31 days worth of info
+    for days in range(0, 30):
+        next_date = date + days * SECONDS_IN_DAY 
+        auction_key = concat(publication_key, sha1(next_date))
+        auction_info = Get(context, auction_key)
+
+        if auction_info:
+            auction_info = Deserialize(auction_info)
+            auctions.append(auction_info)
+        else:
+            auctions.append([])
+
+    return [True, auctions]
 
 def GetAuctionByDay(args):
 
@@ -338,7 +350,7 @@ def GetUserFunds(args):
     funds_key = concat('funds', user)
     funds = Get(context, funds_key)
 
-    return [True, funds+10000]
+    return [True, funds]
 
 def AddFunds(context, user, amount):
     funds_key = concat('funds', user)
@@ -374,6 +386,37 @@ def WithdrawFunds(args):
     OnWithdraw(sender, amount)
     
     return [True, '']
+
+def validatePublicationAuction(context, args):
+    owner = args[0]
+    name = args[1]
+    date = args[2]          
+
+    if date < MIN or date > MAX:
+        print('Date must be within bounds')
+        return False
+    
+    modulo = date % SECONDS_IN_DAY
+    if modulo != 0:
+        print('Date must be 00:00 in contract timezone')
+        return False
+
+    publications_key = concat('publications', owner)
+    publication_key = concat(publications_key, sha1(name))
+    publication = Get(context, publication_key)
+
+    if len(publication) == 0:
+        print('Publication does not exist')
+        return False
+
+    else:
+        publication = Deserialize(publication)
+
+        if not publication[4]: 
+            print('Publication is not currently active')
+            return False
+    
+    return publication_key
 
 # Retrieved from https://github.com/neonexchange/neo-ico-template/blob/master/nex/txio.py
 def get_asset_attachments():
