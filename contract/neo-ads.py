@@ -14,6 +14,7 @@ MAX = 18446744073709000000
 MIN = 100000
 
 OnRefund = RegisterAction('refund', 'addr_to', 'amount')
+OnWithdraw = RegisterAction('withdraw', 'addr_to', 'amount')
 
 def Main(operation, args):
     trigger = GetTrigger()
@@ -44,6 +45,11 @@ def Main(operation, args):
                 return [False, '1 arguments required']
 
             return GetUserPublications(args)
+
+        elif operation == 'getNewPublications':
+            # Cant evaluate 0 args
+
+            return GetNewPublications()
 
         elif operation == 'getAuctionByMonth':
 
@@ -95,9 +101,11 @@ def CreatePublication(args):
 
     publications_key = concat('publications', sender)      # Publications by user
     publication_key = concat(publications_key, sha1(name)) # Publication details - sha1 to prevent malicious input
+    new_publications_key = 'new_publications'           # List of new publications for front page view
 
     publications = Get(context, publications_key)
     publication = Get(context, publication_key)
+    new_publications = Get(context, new_publications_key)
     
     # If publication already exists check if it is active/deleted
     if publication:
@@ -112,14 +120,26 @@ def CreatePublication(args):
     else:
         publications = []
 
+    # Check if there are publications in the all_publications view
+    if new_publications:
+        new_publications = Deserialize(new_publications)
+    else:
+        new_publications = []
+
     first_date = GetTime() + (SECONDS_IN_DAY - GetTime() % SECONDS_IN_DAY)
     is_active = True
 
     new_publication = [name, url, category, first_date, is_active]
     publications.append(name)
+    new_publications.append([sender, name])
+
+    # Shift new publication list to the left
+    if len(new_publications) > 5:
+        new_publications = [new_publications[1], new_publications[2], new_publications[3], new_publications[4], new_publications[5]]
 
     Put(context, publication_key, Serialize(new_publication))
     Put(context, publications_key, Serialize(publications))
+    Put(context, new_publications_key, Serialize(new_publications))
 
     return [True, '']
 
@@ -184,6 +204,35 @@ def GetUserPublications(args):
             user_publications.append(publication)
 
     return [True, user_publications]
+
+def GetNewPublications():
+    context = GetContext()
+
+    publications = Get(context, 'new_publications')
+
+    new_publications = []
+
+    if not publications:
+        return [True, new_publications]
+
+    publications = Deserialize(publications)
+
+    # Go through each new publication and get details
+    for i in range(0, len(publications)):
+        user = publications[i][0]
+        name = publications[i][1]
+
+        publications_key = concat('publications', user)
+        publication_key = concat(publications_key, sha1(name))
+        
+        publication = Get(context, publication_key)  
+        publication = Deserialize(publication)
+
+        # Append only if publication is active
+        if publication[4]:
+            new_publications.append(publication)    
+
+    return [True, new_publications]
 
 def PlaceBid(args):
     owner = args[0]
@@ -289,7 +338,7 @@ def GetUserFunds(args):
     funds_key = concat('funds', user)
     funds = Get(context, funds_key)
 
-    return [True, funds]
+    return [True, funds+10000]
 
 def AddFunds(context, user, amount):
     funds_key = concat('funds', user)
@@ -300,6 +349,30 @@ def AddFunds(context, user, amount):
     Put(context, funds_key, new_funds)
 
 def WithdrawFunds(args):
+    sender = args[0]
+    amount = args[1]
+
+    if not CheckWitness(sender):
+        print('Account owner must be sender')
+        return [False, 'Account owner must be sender']
+
+    if amount < 0:
+        print('Must withdraw positive amount')
+        return [False, 'Must withdraw positive amount']
+
+    user_funds = GetUserFunds(args)
+    funds = user_funds[1]
+
+    if amount > funds:
+        print('Not enough funds for desired amount')
+        return [False, 'Not enough funds']
+
+    context = GetContext()
+
+    _ = AddFunds(context, sender, -amount)  # Error if we don't define 'return' value
+
+    OnWithdraw(sender, amount)
+    
     return [True, '']
 
 # Retrieved from https://github.com/neonexchange/neo-ico-template/blob/master/nex/txio.py
