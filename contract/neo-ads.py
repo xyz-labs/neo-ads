@@ -418,10 +418,11 @@ def GetAuctionWinner(args):
 def GetCurrentAuctionWinner(args):
     owner = args[0]
     name = args[1]
-    date = getWarpedTime(context) + (SECONDS_IN_DAY - getWarpedTime(context) % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
-    args.append(date)
 
     context = GetContext()
+
+    date = getWarpedTime(context) + (SECONDS_IN_DAY - getWarpedTime(context) % SECONDS_IN_DAY) + SECONDS_IN_HOUR * -TIMEZONE
+    args.append(date)
 
     publication_key = validatePublicationAuction(context, args)
     if not publication_key:
@@ -510,9 +511,11 @@ def ResetTimeMachine():
         print('Only the contract owner may reset the time machine')
         return [False, 'Witness must be owner']
 
-    Put('time_machine', 0)
+    context = GetContext()
 
-    return [True]
+    Put(context, 'time_machine', 0)
+
+    return [True, '']
 
 def getWarpedTime(context):
     time = GetTime()
