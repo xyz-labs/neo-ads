@@ -15,9 +15,11 @@ import Auction from '../../containers/Auction/Auction';
 import AuctionDetail from '../../containers/AuctionDetail/AuctionDetail';
 import Bid from '../../containers/Bid/Bid';
 import Tags from '../../containers/Tags/Tags';
+import TransactionSuccess from '../../containers/TransactionSuccess/TransactionSuccess';
 import TimeMachine from '../../containers/TimeMachine/TimeMachine';
 
 import MobileWarningImage from '../../images/mobile-warning.svg';
+
 class App extends Component {
   render() {
     const pathname = this.props.location.pathname
@@ -39,6 +41,7 @@ class App extends Component {
             <Route exact path="/publications/:address/:name" component={Auction} />
             <Route exact path="/publications/:address/:name/:date" component={AuctionDetail} />
             <AuthRoute exact path="/publications/:address/:name/:date/bid" component={Bid} />
+            <Route exact path="/success" component={TransactionSuccess} />
             <AuthRoute exact path="/admin/time_machine" component={TimeMachine}/>
           </Switch>
             {
@@ -47,7 +50,7 @@ class App extends Component {
               null
             }
         </div>
-        <div class="mobile-warning"><img src={MobileWarningImage} class="image-2"/></div>
+        <div className="mobile-warning"><img src={MobileWarningImage} className="image-2"/></div>
       </div>
     );
   }

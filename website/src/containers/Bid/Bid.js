@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { getWinningBid } from '../../reducers/blockchain';
 import { sendInvoke } from '../../reducers/neolink';
 import { createInvokeObject } from '../../lib/neon';
@@ -85,7 +86,7 @@ export class Bid extends Component {
   }
 
   render() {
-    const { activeBid } = this.props
+    const { activeBid, hasSubmitted, txid } = this.props
     const { name, address, date } = this.props.match.params
 
     return (
@@ -101,7 +102,7 @@ export class Bid extends Component {
           </div>
           <div className="w-form">
             <form id="email-form" name="email-form" data-name="Email Form" onSubmit={this.handleSubmit}>
-              <div className="div-block-4 gas"><label for="name" className="t1">Bid</label>
+              <div className="div-block-4 gas"><label htmlFor="name" className="t1">Bid</label>
                 <div className="div-block-2">
                   <input 
                     type="test" 
@@ -117,8 +118,8 @@ export class Bid extends Component {
                   <div className="div-block-3">
                     <p className="t4 mark">GAS</p>
                   </div>
-                </div><label for="name" id="bid-tag" className="t9 tag">Minimum {this.getMinimumGas(activeBid)} GAS</label></div>
-              <div className="div-block-4"><label for="name" className="t1">Ad URL</label>
+                </div><label htmlFor="name" id="bid-tag" className="t9 tag">Minimum {this.getMinimumGas(activeBid)} GAS</label></div>
+              <div className="div-block-4"><label htmlFor="name" className="t1">Ad URL</label>
                 <div className="div-block-2">
                 <input 
                   type="text" 
@@ -133,7 +134,7 @@ export class Bid extends Component {
                   />
                 </div>
               </div>
-              <div className="div-block-4"><label for="name" className="t1 listheading">Ad Image URLs</label>
+              <div className="div-block-4"><label htmlFor="name" className="t1 listheading">Ad Image URLs</label>
                 <div className="div-block-5">
                   <div className="div-block-6">
                     <div className="div-block-2">
@@ -149,7 +150,7 @@ export class Bid extends Component {
                         onChange={this.handleChange('imageURL_0')}
                         />
                     </div>
-                    <label for="name" id="bid-tag" className="t9 tag">Leaderboard: 728px x 90px</label>
+                    <label htmlFor="name" id="bid-tag" className="t9 tag">Leaderboard: 728px x 90px</label>
                   </div>
                   <div className="div-block-6">
                     <div className="div-block-2">
@@ -165,7 +166,7 @@ export class Bid extends Component {
                         onChange={this.handleChange('imageURL_1')}
                         />
                     </div>
-                    <label for="name" id="bid-tag" className="t9 tag">Medium Rectangle (M-REC): 300px x 250px</label>
+                    <label htmlFor="name" id="bid-tag" className="t9 tag">Medium Rectangle (M-REC): 300px x 250px</label>
                   </div>
                 </div>
               </div>
@@ -178,6 +179,13 @@ export class Bid extends Component {
               </form>
             </div>
           </div>
+          { hasSubmitted ? 
+            (<Redirect to={{
+                pathname: '/success',
+                state: { referrer: `/publications/${address}/${name}`, message: 'New Bid Submitted', txid: txid }
+              }} />
+            ) :
+            null }
         </div>
     );
   }
@@ -188,13 +196,17 @@ Bid.propTypes = {
   activeBid: PropTypes.instanceOf(Immutable.List),
   sendInvoke: PropTypes.func,
   getWinningBid: PropTypes.func,
-  match: PropTypes.object
+  match: PropTypes.object,
+  hasSubmitted: PropTypes.bool,
+  txid: PropTypes.string
 };
 
 const mapStateToProps = (state) => {
   return {
     address: state.getIn(['neolink', 'address']),
-    activeBid: state.getIn(['blockchain', 'activeBid'])
+    activeBid: state.getIn(['blockchain', 'activeBid']),
+    hasSubmitted: state.getIn(['neolink', 'hasSubmitted']),
+    txid: state.getIn(['neolink', 'transactionID'])
   };
 };
 

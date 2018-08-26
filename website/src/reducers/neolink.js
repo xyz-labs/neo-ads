@@ -7,6 +7,7 @@ const neoLinkCheck = createAction('NEOLINK_CHECK');
 const neoLinkRequest = createAction('NEOLINK_REQUEST');
 const updateNeoLinkStatus = createAction('UPDATE_NEOLINK_STATUS')
 const transactionSubmitted = createAction('TRANSACTION_SUBMITTED')
+const resetTransactionData = createAction('RESET_TRANSACTION_DATA')
 
 export function checkNeoLinkStatus() {
     return async dispatch => {
@@ -31,8 +32,15 @@ export function sendInvoke(data) {
 
         listenToEvent('NEOLINK_SEND_INVOKE', false, data)
         .then(resp => {
-            dispatch(transactionSubmitted())
+            console.log(resp)
+            dispatch(transactionSubmitted(resp))
         })
+    }
+}
+
+export function resetTransaction() {
+    return async dispatch => {
+        dispatch(resetTransactionData())
     }
 }
 
@@ -40,8 +48,10 @@ const initialState = Immutable.Map({
     isLoading: false,
     isChecking: false,
     isLoggedIn: false,
+    hasSubmitted: false,
     address: '',
-    addressHash: ''
+    addressHash: '',
+    transactionID: ''
 })
 
 const neoLinkReducer = createReducer({
@@ -52,7 +62,8 @@ const neoLinkReducer = createReducer({
     },
     [neoLinkRequest]: (state) => {
         return state.merge({
-            isRequesting: true
+            isRequesting: true,
+            hasSubmitted: false
         })
     },
     [updateNeoLinkStatus]: (state, resp) => {
@@ -69,6 +80,14 @@ const neoLinkReducer = createReducer({
     [transactionSubmitted]: (state, resp) => {
         return state.merge({
             isRequesting: false,
+            hasSubmitted: true,
+            transactionID: resp.status == 'success' ? resp.txid : '',
+        })
+    },
+    [resetTransactionData]: (state) => {
+        return state.merge({
+            hasSubmitted: false,
+            transactionID: ''
         })
     }
 }, initialState);

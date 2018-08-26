@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Neon, { rpc, u } from '@cityofzion/neon-js';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sendInvoke } from '../../reducers/neolink';
 import { createInvokeObject, testInvokeContract } from '../../lib/neon';
@@ -51,15 +52,12 @@ export class NewPublication extends Component {
     const args = [address, name, url, category]
     const invocationObject = createInvokeObject('createPublication', args)
 
-    // const test = testInvokeContract('createPublication',["AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y", u.str2hexstring(name), u.str2hexstring(url), u.str2hexstring(category)])
-    // test.then((res) => {
-    //   console.log(res)
-    // })
-
     this.props.sendInvoke(invocationObject)
   }
 
   render() {
+    const { hasSubmitted, txid } = this.props
+
     return (
       <div className="content">
         <div className="content-body">
@@ -73,7 +71,7 @@ export class NewPublication extends Component {
           <div className="w-form">
             <form id="email-form" name="email-form" data-name="Email Form" onSubmit={this.handleSubmit}>
               <div className="div-block-4">
-                <label for="name" className="t1">Publication Name</label>
+                <label htmlFor="name" className="t1">Publication Name</label>
                 <div className="div-block-2">
                   <input 
                       type="text" 
@@ -87,7 +85,7 @@ export class NewPublication extends Component {
                 </div>
               </div>
               <div className="div-block-4">
-                <label for="name" className="t1">Website URL</label>
+                <label htmlFor="name" className="t1">Website URL</label>
                 <div className="div-block-2">
                   <input 
                     type="text" 
@@ -102,7 +100,7 @@ export class NewPublication extends Component {
                 </div>
               </div>
               <div className="div-block-4">
-                <label for="name" className="t1">Category</label>
+                <label htmlFor="name" className="t1">Category</label>
                 <div className="div-block-2 drop-down">
                   <select 
                     id="field" 
@@ -123,7 +121,14 @@ export class NewPublication extends Component {
                 </div>
               </div><input type="submit" value="Create Publication" data-wait="Please wait..." className="button-primary w-button"/></form>
           </div>
-        </div>
+          { hasSubmitted ? 
+            (<Redirect to={{
+                pathname: '/success',
+                state: { referrer: '/account', message: 'New Publication Submitted', txid: txid }
+              }} />
+            ) :
+            null }
+      </div>
     );
   }
 }
@@ -134,7 +139,9 @@ NewPublication.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    address: state.getIn(['neolink', 'address'])
+    address: state.getIn(['neolink', 'address']),
+    hasSubmitted: state.getIn(['neolink', 'hasSubmitted']),
+    txid: state.getIn(['neolink', 'transactionID'])
   };
 };
 

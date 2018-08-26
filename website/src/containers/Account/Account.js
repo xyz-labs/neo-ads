@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { getUserPublications, getUserFunds } from '../../reducers/blockchain'
 import { sendInvoke } from '../../reducers/neolink'
 import { createInvokeObject } from '../../lib/neon'
@@ -107,7 +107,7 @@ export class Account extends Component {
   }
 
   render() {
-    const { address, publications, funds } = this.props
+    const { address, publications, funds, hasSubmitted, txid } = this.props
 
     return (
       <div>
@@ -136,6 +136,13 @@ export class Account extends Component {
             <div onClick={this.handleWithdrawClick} className="button-secondary w-button">Withdraw</div>
           </div>
         </div>
+        { hasSubmitted ? 
+            (<Redirect to={{
+                pathname: '/success',
+                state: { referrer: '/account', message: 'Successfully submitted', txid: txid }
+              }} />
+            ) :
+            null }
       </div>
     );
   }
@@ -147,7 +154,9 @@ Account.propTypes = {
   funds: PropTypes.number,
   publications: PropTypes.instanceOf(Immutable.List),
   getUserPublications: PropTypes.func,
-  getUserFunds: PropTypes.func
+  getUserFunds: PropTypes.func,
+  hasSubmitted: PropTypes.bool,
+  txid: PropTypes.string
 };
 
 const mapStateToProps = (state) => {
@@ -155,6 +164,8 @@ const mapStateToProps = (state) => {
     address: state.getIn(['neolink', 'address']),
     addressHash: state.getIn(['neolink', 'addressHash']),
     publications: state.getIn(['blockchain', 'activePublicationList']),
+    hasSubmitted: state.getIn(['neolink', 'hasSubmitted']),
+    txid: state.getIn(['neolink', 'transactionID'])
   };
 };
 

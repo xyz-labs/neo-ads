@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
-import { u } from '@cityofzion/neon-js';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWarpedTime } from '../../reducers/blockchain';
 import { sendInvoke } from '../../reducers/neolink';
@@ -60,7 +59,7 @@ export class TimeMachine extends Component {
   }
 
   render() {
-    const { warpedTime } = this.props
+    const { warpedTime, hasSubmitted, txid } = this.props
     const date = new Date(warpedTime * 1000)
 
     return (
@@ -109,18 +108,31 @@ export class TimeMachine extends Component {
         </div>
       </div>
     </div>
-  </div>
+        { hasSubmitted ? 
+            (<Redirect to={{
+                pathname: '/success',
+                state: { referrer: '/admin/time_machine', message: 'Successfully submitted', txid: txid }
+              }} />
+            ) :
+            null }
+      </div>
     );
   }
 }
 
 TimeMachine.propTypes = {
-
+  hasSubmitted: PropTypes.bool,
+  txid: PropTypes.string,
+  warpedTime: PropTypes.string,
+  getWarpedTime: PropTypes.func,
+  sendInvoke: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
   return {
-    warpedTime: state.getIn(['blockchain', 'warpedTime'])
+    warpedTime: state.getIn(['blockchain', 'warpedTime']),
+    hasSubmitted: state.getIn(['neolink', 'hasSubmitted']),
+    txid: state.getIn(['neolink', 'transactionID'])
   };
 };
 
