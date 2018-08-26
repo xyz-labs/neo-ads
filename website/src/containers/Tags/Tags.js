@@ -70,7 +70,7 @@ export class Tags extends Component {
                     var imgUrls = Neon.u.hexstring2str(result.value[1].value[3].value);
                     $('.na-div').attr('href', adUrl);
                     imgUrls.split(',').forEach((url, idx) => {
-                      $(\`.na-img\${idx}\`).attr('src', url);
+                      $(\`.na-img\${idx+1}\`).attr('src', url);
                     });
                   });
                 });</script>`}
