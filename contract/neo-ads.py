@@ -119,7 +119,7 @@ def Main(operation, args):
 
             return TimeMachine(args)
 
-        elif operation == 'ResetTimeMachine':
+        elif operation == 'resetTimeMachine':
             return ResetTimeMachine()
 
     return [False, 'No operation selected']
@@ -495,7 +495,7 @@ def WithdrawFunds(args):
     return [True, '']
 
 def TimeMachine(args):
-    added_time = args[0]
+    added_days = args[0]
 
     if not CheckWitness(OWNER):
         print('Only the contract owner may use the time machine')
@@ -505,7 +505,7 @@ def TimeMachine(args):
 
     time_warp = Get(context, 'time_machine')
 
-    new_time_warp = time_warp + added_time
+    new_time_warp = time_warp + added_days * SECONDS_IN_DAY
 
     Put(context, 'time_machine', new_time_warp)
 
