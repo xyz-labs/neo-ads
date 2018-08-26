@@ -1059,6 +1059,7 @@
   width: 1000px;
   display: flex;
   flex-direction: column-reverse;
+  margin-top: 80px;
 }
 
 .react-calendar__tile{
@@ -1181,7 +1182,6 @@
 .arrow-img{
   max-width: 18px;
   height: auto;
-  padding-top: 3px;
 }
 
 .react-calendar__col{

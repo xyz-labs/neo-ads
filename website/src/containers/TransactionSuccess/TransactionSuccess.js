@@ -11,7 +11,7 @@ class TransactionSuccess extends Component {
     super(props, context);
 
     this.state = {
-      txid: props.location.state
+      txid: props.location.state.txid
     }
   }
 
@@ -21,7 +21,7 @@ class TransactionSuccess extends Component {
 
   render() {
     const { message, referrer } = this.props.location.state
-    const { txid } = this.state
+    const { txid } = this.state.txid
     const neoscanBase = process.env.REACT_APP_NEOSCAN_BASE
 
     return (
@@ -29,7 +29,7 @@ class TransactionSuccess extends Component {
         <div className="context process">
           <p className="t2 blue">{message}</p>
           <div className="div-block-11">
-            <Link to={`${neoscanBase}/transaction/${txid}`} className="button-primary w-button">View Transaction</Link>
+            <a href={`${neoscanBase}/transaction/${txid}`} className="button-primary w-button" target="_blank">View Transaction</a>
             <Link to={referrer} className="button-secondary back w-button">Back‍</Link>
           </div>
         </div>

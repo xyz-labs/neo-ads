@@ -40,7 +40,7 @@ export class Login extends Component {
                 <img src={RefreshImage} className="cross ref"/>
               </div>
               <div className="t6 sep">or</div>
-              <Link to={`https://github.com/CityOfZion/NeoLink`} target="_blank" className="button-primary w-button">Install NeoLink</Link>
+              <a to={`https://github.com/CityOfZion/NeoLink`} target="_blank" className="button-primary w-button">Install NeoLink</a>
             </div>
           </div>
         </div>
@@ -50,11 +50,13 @@ export class Login extends Component {
         <div className="home-container">
           <img src={DisconnectedImage} className="image-3"/>
           <div className="context process">
-            <p className="t2 blue">No account detected, please login via NeoLink</p>
+            <p className="t2 blue">NeoLink account not detected</p>
             <div className="div-block-11">
               <div className="button-secondary _1x1" onClick={this.handleRefreshClick}>
                 <img src={RefreshImage} className="cross ref"/>
               </div>
+              <div className="t6 sep">or</div>
+              <a to={`https://github.com/CityOfZion/NeoLink`} target="_blank" className="button-primary w-button">Install NeoLink</a>
             </div>
           </div>
         </div>

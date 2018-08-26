@@ -62,10 +62,10 @@ export class NewPublication extends Component {
       <div className="content">
         <div className="content-body">
           <div className="general-header-2 w-clearfix">
-            <CookieTrail 
+              <h2 className="h2">Create a new publication</h2>
+              <CookieTrail 
                 items={this.state.cookie}
               />
-              <h2 className="h2">Create a new publication</h2>
             </div>
           </div>
           <div className="w-form">
